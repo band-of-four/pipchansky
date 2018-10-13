@@ -191,8 +191,8 @@
 	<script>
 	
 	function redraw (elem){
-		elem.value = elem.value.replace(/[^\d.-]/g, '');
-		var r = parseFloat(elem.value);
+		elem.value = elem.value.replace(/[^\d,.-]/g, '');
+		var r = parseFloat(elem.value.replace(",", "."));
 		if (!isNaN(r) && r >= 2 && r <= 5){
 			$("#r").removeClass("invalid");
 			document.getElementById('graph_x').innerHTML = r;
@@ -200,6 +200,10 @@
 		} else {
 			$("#r").addClass("invalid");
 		}
+	}
+	
+	function validate_y (elem){
+		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 	}
 	</script>
 </head>
@@ -253,7 +257,7 @@
                         </tr>
                         <tr>
                             <td><label for="y">Y =</label></td>
-                            <td colspan="3"><input required id="x" name="x" type="text" placeholder="(-3 ... 3)"></td>
+                            <td colspan="3"><input required id="y" name="y" type="text" placeholder="(-3 ... 3)" oninput="validate_y(this)"></td>
                         </tr>
                         <tr>
                             <td><label for="r">R =</label></td>
@@ -305,17 +309,17 @@
 <script>
 
     var counter = 1;
-    var y = null;
+    var x = null;
     $(".container .container table button").on("click", function (e) {
         e.preventDefault();
-        if (y === parseInt(e.currentTarget.innerText)) {
-            y = null;
-            document.querySelector("#y").value = y;
+        if (x === parseInt(e.currentTarget.innerText)) {
+            x = null;
+            document.querySelector("#x").value = x;
             $("table button").removeClass("active");
             return;
         }
-        y = parseInt(e.currentTarget.innerText);
-        document.querySelector("#y").value = y;
+        x = parseInt(e.currentTarget.innerText);
+        document.querySelector("#x").value = x;
         $("table button").removeClass("active");
         $(e.currentTarget).addClass("active");
     });
@@ -323,26 +327,29 @@
     $("form#form").on("submit", function (e) {
         e.preventDefault();
         var fd = new FormData(e.currentTarget);
-        var y = parseInt(fd.get("y"));
-        var x = fd.get("x");
-        x = x.replace(",", ".");
+        var x = parseInt(fd.get("x"));
+		console.log('x='+x);
+        var y = fd.get("y");
+		y = y.replace(",", ".");
+        console.log('y='+y);
         var r = fd.get("r");
         r = r.replace(",", ".");
+		console.log('r='+r);
         var endOfLight = false;
         $("label").removeClass("invalid");
-        if (!(y <= 5 && y >= -3)) {
+        if (!(x <= 3 && x >= -5)) {
             $("#inputs table button").addClass("invalid");
             endOfLight = true;
         }
 
         try {
-            if (x != parseFloat(x)) throw true;
-            x = parseFloat(x);
-            if (x >= 3 || x <= -3) {
+            if (y != parseFloat(y)) throw true;
+            y = parseFloat(y);
+            if (y > 3 || y < -3) {
                 throw true;
             }
         } catch (e) {
-            $("#x").addClass("invalid");
+            $("#y").addClass("invalid");
             endOfLight = true;
         }
 
@@ -350,7 +357,7 @@
             // using != instead of !== cause they have different types
             if (r != parseFloat(r)) throw true;
             r = parseFloat(r);
-            if (r >= 5 || r <= 2) {
+            if (r > 5 || r < 2) {
                 throw true;
             }
         } catch (e) {
@@ -365,6 +372,7 @@
             params.append(pair[0], pair[1]);
         }
 
+		console.log('params='+params.toString());
         fetch('AreaCheckServlet/', {
             method: 'POST',
             headers: {
@@ -375,11 +383,11 @@
             return response.json();
         }).then(data => {
 
-            $(".res_elem").remove();
-            counter = 1;
+            //$(".res_elem").remove();
+            //counter = 1;
             const add_html = "<tr class='res_elem'><td>" + counter +
-                "</td><td>" + data["y"] +
                 "</td><td>" + data["x"] +
+                "</td><td>" + data["y"] +
                 "</td><td>" + data["radius"] +
                 "</td><td>" + data["isIn"] +
                 "</td><td>" + 0.000 +
