@@ -188,62 +188,76 @@
 
 
     </style>
+	<script>
+	
+	function redraw (elem){
+		elem.value = elem.value.replace(/[^\d.-]/g, '');
+		var r = parseFloat(elem.value);
+		if (!isNaN(r) && r >= 2 && r <= 5){
+			$("#r").removeClass("invalid");
+			document.getElementById('graph_x').innerHTML = r;
+			document.getElementById('graph_y').innerHTML = r;
+		} else {
+			$("#r").addClass("invalid");
+		}
+	}
+	</script>
 </head>
 <body>
 
 <div class="container vertical">
     <div class="field" id="header">
-        <div class="left">Группа: P3102</div>
-        <div class="middle">Каюков Иван</div>
-        <div class="right">Вариант: 18205</div>
+        <div class="left">Группа: P3202</div>
+        <div class="middle">Каюков Иван, Калугина Марина</div>
+        <div class="right">Вариант: 78638</div>
     </div>
     <div class="container horizontal">
         <div class="container vertical">
             <div id="inputs" class="field grow">
                 <form id="form">
-                    <input type="hidden" id="y" name="y">
+                    <input type="hidden" id="x" name="x">
                     <table>
                         <tr>
-                            <td rowspan="3"><label for="y">Y =</label></td>
+                            <td rowspan="3"><label for="x">X =</label></td>
+                            <td>
+                                <button>-5</button>
+                            </td>
+                            <td>
+                                <button>-4</button>
+                            </td>
                             <td>
                                 <button>-3</button>
                             </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <button>-2</button>
                             </td>
                             <td>
                                 <button>-1</button>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <button>0</button>
                             </td>
+                        </tr>
+                        <tr>
                             <td>
                                 <button>1</button>
                             </td>
                             <td>
                                 <button>2</button>
                             </td>
-                        </tr>
-                        <tr>
                             <td>
                                 <button>3</button>
                             </td>
-                            <td>
-                                <button>4</button>
-                            </td>
-                            <td>
-                                <button>5</button>
-                            </td>
                         </tr>
                         <tr>
-                            <td><label for="x">X =</label></td>
+                            <td><label for="y">Y =</label></td>
                             <td colspan="3"><input required id="x" name="x" type="text" placeholder="(-3 ... 3)"></td>
                         </tr>
                         <tr>
                             <td><label for="r">R =</label></td>
-                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="(2 ... 5)"></td>
+                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="(2 ... 5)" oninput="redraw(this)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -267,14 +281,29 @@
             </div>
         </div>
         <div id="task" class="field">
-            <img src="static/images/graph.jpg" alt="This is a graph">
-            <img id="task_img" src="static/images/task.png" alt="This is a task">
+            <svg id="graph" width="340" height="340">
+				<rect x="50%" y="20" width="75" height="150" fill="blue" />
+				<path d="M 170 310 A 200 200 0 0 0 310 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
+				<polygon points="170,170 20,170 170,245" fill="blue"/>
+				<text id="graph_x" x="305" y="184" font-family="monospace" font-size="15"
+					  fill="white" stroke="black" stroke-width="2">
+						R
+				</text>
+				<text id="graph_y" y="25" x="174" font-family="monospace" font-size="15"
+					fill="white" stroke="black" stroke-width="2">
+						R
+				</text>
+
+				<line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2" />
+				<line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2" />
+			</svg>
         </div>
     </div>
 </div>
 
 <script src="static/js/jQuery.min.js"></script>
 <script>
+
     var counter = 1;
     var y = null;
     $(".container .container table button").on("click", function (e) {
