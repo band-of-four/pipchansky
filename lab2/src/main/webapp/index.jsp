@@ -190,13 +190,27 @@
     </style>
 	<script>
 	
+	var points = [];
+	
 	function redraw (elem){
 		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 		var r = parseFloat(elem.value.replace(",", "."));
 		if (!isNaN(r) && r >= 2 && r <= 5){
+			$(".point").remove();
 			$("#r").removeClass("invalid");
 			document.getElementById('graph_x').innerHTML = r;
 			document.getElementById('graph_y').innerHTML = r;
+			for (let i=0; i<points.length; i++) {
+				var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+				var cx = (points[i][0] * 150) / r + 170;  
+				c.setAttribute('cx',cx);
+				c.setAttribute('class','point');
+				var cy = 170 - points[i][1] * 150 / r;
+				c.setAttribute('cy',cy);
+				c.setAttribute('r','3');
+				c.style.fill='orange';
+				document.getElementById('graph').appendChild(c);
+			}
 		} else {
 			$("#r").addClass("invalid");
 		}
@@ -307,7 +321,6 @@
 
 <script src="static/js/jQuery.min.js"></script>
 <script>
-
     var counter = 1;
     var x = null;
     $(".container .container table button").on("click", function (e) {
@@ -328,13 +341,10 @@
         e.preventDefault();
         var fd = new FormData(e.currentTarget);
         var x = parseInt(fd.get("x"));
-		console.log('x='+x);
         var y = fd.get("y");
 		y = y.replace(",", ".");
-        console.log('y='+y);
         var r = fd.get("r");
         r = r.replace(",", ".");
-		console.log('r='+r);
         var endOfLight = false;
         $("label").removeClass("invalid");
         if (!(x <= 3 && x >= -5)) {
@@ -385,6 +395,7 @@
 
             //$(".res_elem").remove();
             //counter = 1;
+			points.push([data["x"],data["y"]]);
             const add_html = "<tr class='res_elem'><td>" + counter +
                 "</td><td>" + data["x"] +
                 "</td><td>" + data["y"] +
@@ -396,6 +407,7 @@
             document.getElementById("results").innerHTML += add_html;
             $("#results_field").removeClass("hidden");
             counter++;
+			redraw(document.getElementById('r'));
 
             console.log(data); // FIXME debug
         }).catch(err => {
