@@ -350,6 +350,51 @@
 <script src="static/js/jQuery.min.js"></script>
 <script>
 
+    function sendRequestWithCoordinates(x, y, radius) {
+        fetch('AreaCheckServlet/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            body: "x=" + x.toString() + "&y=" + y.toString() + "&r=" + radius.toString()
+        }).then(response => response.json())
+            .then(data => {
+
+                var jsonArrStr = '[' + data.toString() + ']';
+                console.log(jsonArrStr);
+
+                var arr = JSON.parse(jsonArrStr);
+
+                document.getElementById("results").innerHTML = "<tr>" +
+                    "<th>N</th>" +
+                    "<th>Y</th>" +
+                    "<th>X</th>" +
+                    "<th>R</th>" +
+                    "<th>&isin;</th></tr>";
+
+                var counter = 1;
+                arr.forEach(function (elem) {
+                    console.log(elem);
+
+                    points.push([elem["x"], elem["y"]]);
+
+                    document.getElementById("results").innerHTML +=
+                        "<tr class='res_elem'><td>" + counter +
+                        "</td><td>" + elem["x"] +
+                        "</td><td>" + elem["y"] +
+                        "</td><td>" + elem["radius"] +
+                        "</td><td>" + elem["isIn"] +
+                        "</td></tr>";
+                    counter++;
+                });
+
+                $("#results_field").removeClass("hidden");
+                redraw(document.getElementById('r'));
+            }).catch(err => {
+            console.log(err)
+        });
+    }
+
 	var pt = document.getElementById('graph').createSVGPoint();
 	
 	graph.onclick = function(event) {
@@ -361,7 +406,7 @@
 			points.push([cursorpt.x, cursorpt.y]);
 		}
 		redraw(document.getElementById('r'));
-	}	
+	};
 
 
     var x = null;
@@ -424,49 +469,7 @@
             params.append(pair[0], pair[1]);
         }
 
-        // console.log('params=' + params.toString());
-        fetch('AreaCheckServlet/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-            },
-            body: params.toString()
-        }).then(response => response.json())
-            .then(data => {
-
-                var jsonArrStr = '[' + data.toString() + ']';
-                console.log(jsonArrStr);
-
-                var arr = JSON.parse(jsonArrStr);
-
-                document.getElementById("results").innerHTML = "<tr>" +
-                    "<th>N</th>" +
-                    "<th>Y</th>" +
-                    "<th>X</th>" +
-                    "<th>R</th>" +
-                    "<th>&isin;</th></tr>";
-
-                var counter = 1;
-                arr.forEach(function (elem) {
-                    console.log(elem);
-
-                    points.push([elem["x"], elem["y"]]);
-
-                    document.getElementById("results").innerHTML +=
-                        "<tr class='res_elem'><td>" + counter +
-                        "</td><td>" + elem["x"] +
-                        "</td><td>" + elem["y"] +
-                        "</td><td>" + elem["radius"] +
-                        "</td><td>" + elem["isIn"] +
-                        "</td></tr>";
-                    counter++;
-                });
-
-                $("#results_field").removeClass("hidden");
-                redraw(document.getElementById('r'));
-            }).catch(err => {
-            console.log(err)
-        });
+        sendRequestWithCoordinates(params.get("x"), params.get("y"), params.get("r"));
     });
 
     $("input[type = text]").on("click", function (event) {
