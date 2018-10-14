@@ -225,7 +225,7 @@
 				c.setAttribute('cy',cy);
 				c.setAttribute('r','3');
 				c.setAttribute('stroke', 'black');
-				console.log(x, y);
+
 			
 				if ( (x >= 0.0 && x <= r && y >= -r && y <= 0.0 && Math.sqrt(x * x + y * y) <= r)|| 
 					 (x >= 0 && x <= r/2 && y >= 0.0 && y <= r) ||
@@ -361,7 +361,6 @@
             .then(data => {
 
                 var jsonArrStr = '[' + data.toString() + ']';
-                console.log(jsonArrStr);
 
                 var arr = JSON.parse(jsonArrStr);
 
@@ -374,7 +373,6 @@
 
                 var counter = 1;
                 arr.forEach(function (elem) {
-                    console.log(elem);
 
                     points.push([elem["x"], elem["y"]]);
 
@@ -401,13 +399,11 @@
 		pt.x = event.clientX;
 		pt.y = event.clientY;
 		var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
-		console.log("(" + cursorpt.x + ", " + cursorpt.y + ")");
 		if ((document.getElementById('r').value)>=2) {
 			points.push([cursorpt.x, cursorpt.y]);
 			redraw(document.getElementById('r'));
 			sendRequestWithCoordinates(cursorpt.x*document.getElementById('r').value/150, -(cursorpt.y-170)*document.getElementById('r').value/150, document.getElementById('r').value);
 		}
-		
 	};
 
 
