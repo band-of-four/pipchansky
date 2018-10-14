@@ -192,6 +192,7 @@
 	
 	var points = [];
 	
+	
 	function redraw (elem){
 		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 		var r = parseFloat(elem.value.replace(",", "."));
@@ -200,19 +201,32 @@
 			$("#r").removeClass("invalid");
 			document.getElementById('graph_x').innerHTML = r;
 			document.getElementById('graph_y').innerHTML = r;
+			
 			for (let i=0; i<points.length; i++) {
 				
 				//точка
 				var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-				var cx = (points[i][0] * 150) / r + 170;  
+				if (points[i][0] < 10) {
+					var cx = (points[i][0] * 150) / r + 170; 
+					var x = points[i][0];
+				} else {
+					var cx = points[i][0];
+					var x = (points[i][0]-170)*r/150;
+				}
 				c.setAttribute('cx',cx);
 				c.setAttribute('class','point');
-				var cy = 170 - points[i][1] * 150 / r;
+				if (points[i][0] < 10) {
+					var cy = 170 - points[i][1] * 150 / r;
+					var y = points[i][1];
+				} else {
+					var cy = points[i][1];
+					var y = -(points[i][1]-170)*r/150;
+				}
 				c.setAttribute('cy',cy);
 				c.setAttribute('r','3');
 				c.setAttribute('stroke', 'black');
-				var x = points[i][0];
-				var y = points[i][1];
+				console.log(x, y);
+			
 				if ( (x >= 0.0 && x <= r && y >= -r && y <= 0.0 && Math.sqrt(x * x + y * y) <= r)|| 
 					 (x >= 0 && x <= r/2 && y >= 0.0 && y <= r) ||
 					 (x >= -r && x <= 0.0 && y >= -r / 2 && y <= 0.0 && (-x - 2*y) <= r)) {
@@ -335,6 +349,21 @@
 
 <script src="static/js/jQuery.min.js"></script>
 <script>
+
+	var pt = document.getElementById('graph').createSVGPoint();
+	
+	graph.onclick = function(event) {
+		pt.x = event.clientX;
+		pt.y = event.clientY;
+		var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
+		console.log("(" + cursorpt.x + ", " + cursorpt.y + ")");
+		if ((document.getElementById('r').value)>=2) {
+			points.push([cursorpt.x, cursorpt.y]);
+		}
+		redraw(document.getElementById('r'));
+	}	
+
+
     var x = null;
     $(".container .container table button").on("click", function (e) {
         e.preventDefault();
