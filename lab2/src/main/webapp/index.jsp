@@ -404,8 +404,10 @@
 		console.log("(" + cursorpt.x + ", " + cursorpt.y + ")");
 		if ((document.getElementById('r').value)>=2) {
 			points.push([cursorpt.x, cursorpt.y]);
+			redraw(document.getElementById('r'));
+			sendRequestWithCoordinates(cursorpt.x*document.getElementById('r').value/150, -(cursorpt.y-170)*document.getElementById('r').value/150, document.getElementById('r').value);
 		}
-		redraw(document.getElementById('r'));
+		
 	};
 
 
