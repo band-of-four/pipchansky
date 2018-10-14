@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse
 class ControllerServlet : HttpServlet() {
   override fun doGet(req: HttpServletRequest, resp: HttpServletResponse) {
     val staticTypes = arrayOf("png", "css", "jpg", "ico", "js")
+
     if (req.requestURI.split(".").last() in staticTypes) {
-      // send statics here
       resp.setHeader("Content-Type", servletContext.getMimeType(req.requestURI))
       try {
         servletContext.getResourceAsStream(req.requestURI).copyTo(resp.outputStream)
@@ -26,7 +26,7 @@ class ControllerServlet : HttpServlet() {
   }
 
   override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
-    if (req.requestURI == "/AreaCheckServlet/") { // FIXME trailing slash
+    if (req.requestURI.trimEnd { it == '/' } == "/AreaCheckServlet") {
       req.servletContext.getNamedDispatcher("AreaCheckServlet").forward(req, resp)
     } else { resp.sendError(404) }
   }
