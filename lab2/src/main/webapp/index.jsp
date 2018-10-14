@@ -188,6 +188,7 @@
 
 
     </style>
+<<<<<<< HEAD
 	<script>
 	
 	var points = [];
@@ -232,6 +233,40 @@
 		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 	}
 	</script>
+=======
+    <script>
+
+        var points = [];
+
+        function redraw(elem) {
+            elem.value = elem.value.replace(/[^\d,.-]/g, '');
+            var r = parseFloat(elem.value.replace(",", "."));
+            if (!isNaN(r) && r >= 2 && r <= 5) {
+                $(".point").remove();
+                $("#r").removeClass("invalid");
+                document.getElementById('graph_x').innerHTML = r;
+                document.getElementById('graph_y').innerHTML = r;
+                for (let i = 0; i < points.length; i++) {
+                    var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                    var cx = (points[i][0] * 150) / r + 170;
+                    c.setAttribute('cx', cx);
+                    c.setAttribute('class', 'point');
+                    var cy = 170 - points[i][1] * 150 / r;
+                    c.setAttribute('cy', cy);
+                    c.setAttribute('r', '3');
+                    c.style.fill = 'orange';
+                    document.getElementById('graph').appendChild(c);
+                }
+            } else {
+                $("#r").addClass("invalid");
+            }
+        }
+
+        function validate_y(elem) {
+            elem.value = elem.value.replace(/[^\d,.-]/g, '');
+        }
+    </script>
+>>>>>>> 66f1e2f8f50e11afe0467172089265a78c9775c7
 </head>
 <body>
 
@@ -283,11 +318,13 @@
                         </tr>
                         <tr>
                             <td><label for="y">Y =</label></td>
-                            <td colspan="3"><input required id="y" name="y" type="text" placeholder="(-3 ... 3)" oninput="validate_y(this)"></td>
+                            <td colspan="3"><input required id="y" name="y" type="text" placeholder="(-3 ... 3)"
+                                                   oninput="validate_y(this)"></td>
                         </tr>
                         <tr>
                             <td><label for="r">R =</label></td>
-                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="(2 ... 5)" oninput="redraw(this)"></td>
+                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="(2 ... 5)"
+                                                   oninput="redraw(this)"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -312,6 +349,7 @@
         </div>
         <div id="task" class="field">
             <svg id="graph" width="340" height="340">
+<<<<<<< HEAD
 				<rect x="50%" y="20" width="75" height="150" fill="blue" />
 				<path d="M 170 310 A 200 200 0 0 0 310 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
 				<polygon points="170,170 20,170 170,245" fill="blue"/>
@@ -327,13 +365,29 @@
 				<line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2" />
 				<line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2" />
 			</svg>
+=======
+                <rect x="50%" y="20" width="75" height="150" fill="blue"/>
+                <path d="M 170 310 A 200 200 0 0 0 310 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
+                <polygon points="170,170 20,170 170,245" fill="blue"/>
+                <text id="graph_x" x="305" y="184" font-family="monospace" font-size="15"
+                      fill="white" stroke="black" stroke-width="2">
+                    R
+                </text>
+                <text id="graph_y" y="25" x="174" font-family="monospace" font-size="15"
+                      fill="white" stroke="black" stroke-width="2">
+                    R
+                </text>
+
+                <line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2"/>
+                <line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2"/>
+            </svg>
+>>>>>>> 66f1e2f8f50e11afe0467172089265a78c9775c7
         </div>
     </div>
 </div>
 
 <script src="static/js/jQuery.min.js"></script>
 <script>
-    var counter = 1;
     var x = null;
     $(".container .container table button").on("click", function (e) {
         e.preventDefault();
@@ -354,7 +408,7 @@
         var fd = new FormData(e.currentTarget);
         var x = parseInt(fd.get("x"));
         var y = fd.get("y");
-		y = y.replace(",", ".");
+        y = y.replace(",", ".");
         var r = fd.get("r");
         r = r.replace(",", ".");
         var endOfLight = false;
@@ -394,33 +448,47 @@
             params.append(pair[0], pair[1]);
         }
 
-		console.log('params='+params.toString());
+        // console.log('params=' + params.toString());
         fetch('AreaCheckServlet/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
             },
             body: params.toString()
-        }).then(response => {
-            return response.json();
-        }).then(data => {
+        }).then(response => response.json())
+            .then(data => {
 
-            //$(".res_elem").remove();
-            //counter = 1;
-			points.push([data["x"],data["y"]]);
-            const add_html = "<tr class='res_elem'><td>" + counter +
-                "</td><td>" + data["x"] +
-                "</td><td>" + data["y"] +
-                "</td><td>" + data["radius"] +
-                "</td><td>" + data["isIn"] +
-                "</td><td>" + 0.000 +
-                "</td><td>" + 0.000 +
-                "</td></tr>";
-            document.getElementById("results").innerHTML += add_html;
-            $("#results_field").removeClass("hidden");
-            counter++;
-			redraw(document.getElementById('r'));
-        }).catch(err => {
+                var jsonArrStr = '[' + data.toString() + ']';
+                console.log(jsonArrStr);
+
+                var arr = JSON.parse(jsonArrStr);
+
+                document.getElementById("results").innerHTML = "<tr>" +
+                    "<th>N</th>" +
+                    "<th>Y</th>" +
+                    "<th>X</th>" +
+                    "<th>R</th>" +
+                    "<th>&isin;</th></tr>";
+
+                var counter = 1;
+                arr.forEach(function (elem) {
+                    console.log(elem);
+
+                    points.push([elem["x"], elem["y"]]);
+
+                    document.getElementById("results").innerHTML +=
+                        "<tr class='res_elem'><td>" + counter +
+                        "</td><td>" + elem["x"] +
+                        "</td><td>" + elem["y"] +
+                        "</td><td>" + elem["radius"] +
+                        "</td><td>" + elem["isIn"] +
+                        "</td></tr>";
+                    counter++;
+                });
+
+                $("#results_field").removeClass("hidden");
+                redraw(document.getElementById('r'));
+            }).catch(err => {
             console.log(err)
         });
     });
