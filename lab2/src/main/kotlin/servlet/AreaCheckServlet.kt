@@ -1,6 +1,7 @@
 package servlet
 
 import com.google.gson.Gson
+import com.google.gson.JsonArray
 import java.lang.NumberFormatException
 import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet

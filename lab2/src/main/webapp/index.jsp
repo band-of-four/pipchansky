@@ -408,8 +408,6 @@
             $("#results_field").removeClass("hidden");
             counter++;
 			redraw(document.getElementById('r'));
-
-            console.log(data); // FIXME debug
         }).catch(err => {
             console.log(err)
         });
