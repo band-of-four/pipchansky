@@ -201,6 +201,8 @@
 			document.getElementById('graph_x').innerHTML = r;
 			document.getElementById('graph_y').innerHTML = r;
 			for (let i=0; i<points.length; i++) {
+				
+				//точка
 				var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 				var cx = (points[i][0] * 150) / r + 170;  
 				c.setAttribute('cx',cx);
@@ -208,7 +210,17 @@
 				var cy = 170 - points[i][1] * 150 / r;
 				c.setAttribute('cy',cy);
 				c.setAttribute('r','3');
-				c.style.fill='orange';
+				c.setAttribute('stroke', 'black');
+				var x = points[i][0];
+				var y = points[i][1];
+				if ( (x >= 0.0 && x <= r && y >= -r && y <= 0.0 && Math.sqrt(x * x + y * y) <= r)|| 
+					 (x >= 0 && x <= r/2 && y >= 0.0 && y <= r) ||
+					 (x >= -r && x <= 0.0 && y >= -r / 2 && y <= 0.0 && (-x - 2*y) <= r)) {
+						c.style.fill='green';
+					} else {
+						c.style.fill='red';
+					}
+				
 				document.getElementById('graph').appendChild(c);
 			}
 		} else {
@@ -303,12 +315,12 @@
 				<rect x="50%" y="20" width="75" height="150" fill="blue" />
 				<path d="M 170 310 A 200 200 0 0 0 310 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
 				<polygon points="170,170 20,170 170,245" fill="blue"/>
-				<text id="graph_x" x="305" y="184" font-family="monospace" font-size="15"
-					  fill="white" stroke="black" stroke-width="2">
+				<text id="graph_x" x="305" y="184" font-family="monospace" font-size="20"
+					  fill="white" stroke="black">
 						R
 				</text>
-				<text id="graph_y" y="25" x="174" font-family="monospace" font-size="15"
-					fill="white" stroke="black" stroke-width="2">
+				<text id="graph_y" y="25" x="174" font-family="monospace" font-size="20"
+					fill="white" stroke="black">
 						R
 				</text>
 
