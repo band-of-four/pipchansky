@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 @WebServlet(name = "AreaCheckServlet")
@@ -26,8 +27,10 @@ class AreaCheckServlet : HttpServlet() {
         req.session.setAttribute("responses", "[]")
       }
 
-      val arrayResponse = if (!req.session.isNew) { gson.fromJson<JsonArray>(req.session
-          .getAttribute("responses").toString(), JsonArray::class.java) } else JsonArray()
+      val arrayResponse = if (!req.session.isNew) {
+        gson.fromJson<JsonArray>(req.session
+            .getAttribute("responses").toString(), JsonArray::class.java)
+      } else JsonArray()
 
       arrayResponse.add(gson.toJson(Response(isIn, x, y, r)))
       req.session.setAttribute("responses", arrayResponse)
@@ -49,7 +52,7 @@ class AreaCheckServlet : HttpServlet() {
     if (x in 0.0..r && y in -r..0.0 && sqrt(x * x + y * y) <= r) {
       return true
     }
-    if (x in -r..0.0 && y in -r / 2..0.0 && x <= r - y) {
+    if (x in -r..0.0 && y in -r / 2..0.0 && abs(x) + 2*abs(y) <= r) {
       return true
     }
     return false
