@@ -189,10 +189,10 @@
 
     </style>
 	<script>
-	
+
 	var points = [];
-	
-	
+
+
 	function redraw (elem){
 		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 		var r = parseFloat(elem.value.replace(",", "."));
@@ -201,13 +201,13 @@
 			$("#r").removeClass("invalid");
 			document.getElementById('graph_x').innerHTML = r;
 			document.getElementById('graph_y').innerHTML = r;
-			
+
 			for (let i=0; i<points.length; i++) {
-				
+
 				//точка
 				var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
 				if (points[i][0] < 10) {
-					var cx = (points[i][0] * 150) / r + 170; 
+					var cx = (points[i][0] * 150) / r + 170;
 					var x = points[i][0];
 				} else {
 					var cx = points[i][0];
@@ -226,22 +226,22 @@
 				c.setAttribute('r','3');
 				c.setAttribute('stroke', 'black');
 
-			
-				if ( (x >= 0.0 && x <= r && y >= -r && y <= 0.0 && Math.sqrt(x * x + y * y) <= r)|| 
+
+				if ( (x >= 0.0 && x <= r && y >= -r && y <= 0.0 && Math.sqrt(x * x + y * y) <= r)||
 					 (x >= 0 && x <= r/2 && y >= 0.0 && y <= r) ||
 					 (x >= -r && x <= 0.0 && y >= -r / 2 && y <= 0.0 && (-x - 2*y) <= r)) {
 						c.style.fill='green';
 					} else {
 						c.style.fill='red';
 					}
-				
+
 				document.getElementById('graph').appendChild(c);
 			}
 		} else {
 			$("#r").addClass("invalid");
 		}
 	}
-	
+
 	function validate_y (elem){
 		elem.value = elem.value.replace(/[^\d,.-]/g, '');
 	}
@@ -307,7 +307,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td colspan="3"><input type="submit" value="Отправить"></td>
+                            <td colspan="3"><input type="submit" id="send_button" value="Отправить"></td>
                         </tr>
                     </table>
                 </form>
@@ -351,8 +351,11 @@
 <script>
 
     function sendRequestWithCoordinates(x, y, radius) {
+
+        points.push([x, y]);
         fetch('AreaCheckServlet/', {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
             },
@@ -364,6 +367,8 @@
 
                 var arr = JSON.parse(jsonArrStr);
 
+
+
                 document.getElementById("results").innerHTML = "<tr>" +
                     "<th>N</th>" +
                     "<th>Y</th>" +
@@ -373,9 +378,6 @@
 
                 var counter = 1;
                 arr.forEach(function (elem) {
-
-                    points.push([elem["x"], elem["y"]]);
-
                     document.getElementById("results").innerHTML +=
                         "<tr class='res_elem'><td>" + counter +
                         "</td><td>" + elem["x"] +
@@ -394,13 +396,13 @@
     }
 
 	var pt = document.getElementById('graph').createSVGPoint();
-	
+
 	graph.onclick = function(event) {
 		pt.x = event.clientX;
 		pt.y = event.clientY;
 		var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
 		if ((document.getElementById('r').value)>=2) {
-			points.push([cursorpt.x, cursorpt.y]);
+
 			//points.push([cursorpt.x*document.getElementById('r').value/150, cursorpt.y]);
 			sendRequestWithCoordinates((cursorpt.x-170)*document.getElementById('r').value/150, -(cursorpt.y-170)*document.getElementById('r').value/150, document.getElementById('r').value);
 		}
