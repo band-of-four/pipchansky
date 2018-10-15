@@ -329,9 +329,9 @@
         <div id="task" class="field">
             <svg id="graph" width="340" height="340">
 				<rect x="50%" y="20" width="75" height="150" fill="blue" />
-				<path d="M 170 310 A 200 200 0 0 0 310 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
+				<path d="M 170 320 A 150 150 0 0 0 320 170 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>
 				<polygon points="170,170 20,170 170,245" fill="blue"/>
-				<text id="graph_x" x="305" y="184" font-family="monospace" font-size="20"
+				<text id="graph_x" x="315" y="184" font-family="monospace" font-size="20"
 					  fill="white" stroke="black">
 						R
 				</text>
@@ -401,9 +401,10 @@
 		var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
 		if ((document.getElementById('r').value)>=2) {
 			points.push([cursorpt.x, cursorpt.y]);
-			redraw(document.getElementById('r'));
-			sendRequestWithCoordinates(cursorpt.x*document.getElementById('r').value/150, -(cursorpt.y-170)*document.getElementById('r').value/150, document.getElementById('r').value);
+			//points.push([cursorpt.x*document.getElementById('r').value/150, cursorpt.y]);
+			sendRequestWithCoordinates((cursorpt.x-170)*document.getElementById('r').value/150, -(cursorpt.y-170)*document.getElementById('r').value/150, document.getElementById('r').value);
 		}
+		redraw(document.getElementById('r'));
 	};
 
 
