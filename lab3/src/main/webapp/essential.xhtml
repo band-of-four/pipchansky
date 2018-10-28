@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://java.sun.com/jsf/html">
+
+<h:head>
+    <title>Here will be graph</title>
+</h:head>
+
+<h:body>
+
+    <ui:insert name="header">
+        <ui:include src="resources/templates/header.xhtml"/>
+    </ui:insert>
+
+    <h1>This is the main page</h1>
+
+    <h:form>
+        <p:inputText id="x" value="#{areaCheckBean.x}" required="true"/>
+        <p:inputText id="y" value="#{areaCheckBean.y}" required="true"/>
+        <p:inputText id="r" value="#{areaCheckBean.r}" required="true"/>
+        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable"/>
+    </h:form>
+
+    <!-- FIXME extra line in the table whenever page updates -->
+    <h:dataTable id="resultsTable" value="#{areaCheckBean.resultsArray}" var="elem">
+
+        <h:column>
+            <!-- column header -->
+            <f:facet name="header">X</f:facet>
+            <!-- row record -->
+            #{elem.x}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">Y</f:facet>
+            #{elem.y}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">R</f:facet>
+            #{elem.r}
+        </h:column>
+
+        <h:column>
+            <f:facet name="header">IsHit</f:facet>
+            #{elem.hit}
+        </h:column>
+
+    </h:dataTable>
+
+</h:body>
+
+</html>

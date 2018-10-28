@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
+
+.top_header {
+    font-family: 'Pacifico', cursive;
+    font-size: 24px;
+    color: black;
+}
+
+.top_variant {
+    font-family: 'Pacifico', cursive;
+    font-size: 24px;
+    color: red;
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    color: black;
+    margin: 0 0 20px;
+}
+
+.field {
+    margin: 10px;
+    padding: 1.5em;
+    background: lightblue;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+}
