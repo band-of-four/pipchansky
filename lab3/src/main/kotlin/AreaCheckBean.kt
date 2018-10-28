@@ -4,7 +4,7 @@ class AreaCheckBean : Serializable {
   private val history = ArrayList<RequestResult>()
   var x = 0.0
   var y = 0.0
-  var r = 0.0
+  var r = 1.0
 
   fun tryHit() {
     if (!validate()) return

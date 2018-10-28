@@ -10,6 +10,17 @@
             <from-action>#{navigationController.moveToEssential}</from-action>
             <from-outcome>index</from-outcome>
             <to-view-id>/essential.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/essential.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{navigationController.moveToIndex}</from-action>
+            <from-outcome>essential</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+            <redirect/>
         </navigation-case>
     </navigation-rule>
 

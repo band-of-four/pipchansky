@@ -4,7 +4,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://java.sun.com/jsf/html">
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Here will be graph</title>
@@ -18,13 +18,37 @@
 
     <h1>This is the main page</h1>
 
-    <h:form>
-        <p:inputText id="x" value="#{areaCheckBean.x}" required="true"/>
-        <p:inputText id="y" value="#{areaCheckBean.y}" required="true"/>
-        <p:inputText id="r" value="#{areaCheckBean.r}" required="true"/>
-        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable"/>
+    <h:form id="mainForm">
+        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+            <p:outputLabel for="x" value="X:" />
+            <h:selectOneRadio id="x" value="#{areaCheckBean.x}">
+                <f:selectItem itemLabel="-4" itemValue="-4" />
+                <f:selectItem itemLabel="-3" itemValue="-3" />
+                <f:selectItem itemLabel="-2" itemValue="-2" />
+                <f:selectItem itemLabel="-1" itemValue="-1" />
+                <f:selectItem itemLabel="0" itemValue="0" />
+                <f:selectItem itemLabel="1" itemValue="1" />
+                <f:selectItem itemLabel="2" itemValue="2" />
+                <f:selectItem itemLabel="3" itemValue="3" />
+                <f:selectItem itemLabel="4" itemValue="4" />
+            </h:selectOneRadio>
+        </h:panelGrid>
+        <h:message for = "y" style = "color:red" />
+        <p:outputLabel for="y" value="Y:" />
+        <h:inputText id="y" value="#{areaCheckBean.y}" required="true" requiredMessage="Это поле обязательно"/>
+        <h:panelGrid columns="1" style="margin-bottom: 10px">
+            <p:outputLabel for="r" value="R:" />
+            <p:inputText id="r" value="#{areaCheckBean.r}" />
+            <p:slider for="r" minValue="1" maxValue="4" step="0.25"
+                      onSlideEnd="console.log('aaaa:' + document.getElementById('mainForm:r').value))"/>
+        </h:panelGrid>
+        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form"/>
     </h:form>
 
+    <h:form>
+        <h:commandLink action="#{navigationController.moveToIndex}"
+                       value="Start page"/>
+    </h:form>
     <!-- FIXME extra line in the table whenever page updates -->
     <h:dataTable id="resultsTable" value="#{areaCheckBean.resultsArray}" var="elem">
 
