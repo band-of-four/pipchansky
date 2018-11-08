@@ -297,12 +297,12 @@
                         </tr>
                         <tr>
                             <td><label for="y">Y =</label></td>
-                            <td colspan="3"><input required id="y" name="y" type="text" placeholder="(-3 ... 3)"
+                            <td colspan="3"><input required id="y" name="y" type="text" placeholder="-3 ... 3"
                                                    oninput="validate_y(this)"></td>
                         </tr>
                         <tr>
                             <td><label for="r">R =</label></td>
-                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="(2 ... 5)"
+                            <td colspan="3"><input required id="r" name="r" type="text" placeholder="2 ... 5"
                                                    oninput="redraw(this)"></td>
                         </tr>
                         <tr>
