@@ -4,10 +4,13 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
 
 <h:head>
     <title>Here will be graph</title>
+
+    <h:outputScript library = "js" name = "draw.js" />
 </h:head>
 
 <h:body>
@@ -18,8 +21,14 @@
 
     <h1>This is the main page</h1>
 
-    <h:graphicImage
-            value = "resources/img/batman.svg"/>
+    <svg id="batman" width="454" height="206" onclick="getPoint(event)" xmlns="http://www.w3.org/2000/svg" >
+        <defs>
+            <pattern id="image" patternUnits="userSpaceOnUse" width="454" height="206">
+                <image x="0" y="0" width="454" height="206" xlink:href="resources/img/batman.svg"/>
+            </pattern>
+        </defs>
+        <polygon points="0,0 454,0 454,206 0,206" fill="url(#image)"></polygon>
+    </svg>
 
     <h:form id="mainForm">
         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
@@ -81,8 +90,8 @@
             #{elem.hit}
         </h:column>
 
+
     </h:dataTable>
-    
 </h:body>
 
 </html>
