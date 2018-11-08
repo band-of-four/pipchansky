@@ -18,6 +18,9 @@
 
     <h1>This is the main page</h1>
 
+    <h:graphicImage
+            value = "resources/img/batman.svg"/>
+
     <h:form id="mainForm">
         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
             <p:outputLabel for="x" value="X:" />
@@ -43,8 +46,8 @@
 
         <h:panelGrid columns="1" style="margin-bottom: 10px">
             <p:outputLabel for="r" value="R:" />
-            <p:inputText id="r" value="#{areaCheckBean.r}" />
-            <p:slider for="r" minValue="1" maxValue="4" step="0.25" onkeydown="return false;"/>
+            <p:inputText id="r" value="#{areaCheckBean.r}"  onkeydown="return false;"/>
+            <p:slider for="r" minValue="1" maxValue="4" step="0.25"/>
         </h:panelGrid>
         <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form"/>
     </h:form>
@@ -79,7 +82,7 @@
         </h:column>
 
     </h:dataTable>
-
+    
 </h:body>
 
 </html>
