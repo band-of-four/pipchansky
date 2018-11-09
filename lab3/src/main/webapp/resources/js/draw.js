@@ -9,8 +9,8 @@ function getPoint(event) {
     var y = event.clientY;
     var cursorpt =  pt.matrixTransform(document.getElementById('batman').getScreenCTM().inverse());
     var r = document.getElementById('mainForm:r').value;
-    console.log("X", x+cursorpt.x);
-    console.log("Y", y+cursorpt.y);
+    document.getElementById("batman_x").innerHTML = r;
+    document.getElementById("batman_y").innerHTML = r/2;
     //TODO сохранить точку
     redraw(x+cursorpt.x, y+cursorpt.y, r);
 }
@@ -19,11 +19,12 @@ function addPointFromForm() {
     var r = document.getElementById('mainForm:r').value;
     var x = getX();
     var y = document.getElementById('mainForm:y').value;
+    document.getElementById("batman_x").innerHTML = r;
+    document.getElementById("batman_y").innerHTML = r/2;
     //TODO обработать числа с запятой
     //TODO сохранить точку
     x = 217 / r * x + 227;
     y = 186 / r * y + 103;
-    console.log(x, " ", y);
     redraw(x, y, r)
 }
 
