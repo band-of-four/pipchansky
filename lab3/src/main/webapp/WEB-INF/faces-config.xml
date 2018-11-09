@@ -5,13 +5,6 @@
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
 
     <managed-bean>
-        <description>Hello world message</description>
-        <managed-bean-name>welcome</managed-bean-name>
-        <managed-bean-class>WelcomeBean</managed-bean-class>
-        <managed-bean-scope>application</managed-bean-scope>
-    </managed-bean>
-
-    <managed-bean>
         <description>Navigation controller bean</description>
         <managed-bean-name>navigationController</managed-bean-name>
         <managed-bean-class>NavigationController</managed-bean-class>
