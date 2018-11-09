@@ -22,6 +22,8 @@
     <h1>This is the main page</h1>
 
     <svg id="batman" width="454" height="206" onclick="getPoint(event)" xmlns="http://www.w3.org/2000/svg" >
+        <line x1="227" y1="0" x2="227" y2="206" style="stroke:rgb(100,100,100);stroke-width:1"></line>
+        <line x1="0" y1="103" x2="454" y2="103" style="stroke:rgb(100,100,100);stroke-width:1"></line>
         <defs>
             <pattern id="image" patternUnits="userSpaceOnUse" width="454" height="206">
                 <image x="0" y="0" width="454" height="206" xlink:href="resources/img/batman.svg"/>
@@ -58,7 +60,7 @@
             <p:inputText id="r" value="#{areaCheckBean.r}"  onkeydown="return false;"/>
             <p:slider for="r" minValue="1" maxValue="4" step="0.25"/>
         </h:panelGrid>
-        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form"/>
+        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form" onclick="addPointFromForm()"/>
     </h:form>
 
     <h:form>

@@ -1,17 +1,30 @@
 var pt;
 
 document.addEventListener('DOMContentLoaded', function(){
-pt = document.getElementById('batman').createSVGPoint();
-
+    pt = document.getElementById('batman').createSVGPoint();
 });
 
 function getPoint(event) {
     var x = event.clientX;
     var y = event.clientY;
     var cursorpt =  pt.matrixTransform(document.getElementById('batman').getScreenCTM().inverse());
+    var r = document.getElementById('mainForm:r').value;
+    console.log("X", x+cursorpt.x);
+    console.log("Y", y+cursorpt.y);
+    //TODO сохранить точку
+    redraw(x+cursorpt.x, y+cursorpt.y, r);
+}
 
-    //сохранить точку
-    redraw(x+cursorpt.x, y+cursorpt.y, 0);
+function addPointFromForm() {
+    var r = document.getElementById('mainForm:r').value;
+    var x = getX();
+    var y = document.getElementById('mainForm:y').value;
+    //TODO обработать числа с запятой
+    //TODO сохранить точку
+    x = 217 / r * x + 227;
+    y = 186 / r * y + 103;
+    console.log(x, " ", y);
+    redraw(x, y, r)
 }
 
 function redraw(elemX, elemY, elemR){
@@ -26,6 +39,17 @@ function redraw(elemX, elemY, elemR){
     } else {
         c.style.fill='red';
     }
-   // console.log(document.getElementById("batman"));
     document.getElementById('batman').appendChild(c);
+}
+
+function getX() {
+    if (document.getElementById('mainForm:x:0').checked) return -4;
+    if (document.getElementById('mainForm:x:1').checked) return -3;
+    if (document.getElementById('mainForm:x:2').checked) return -2;
+    if (document.getElementById('mainForm:x:3').checked) return -1;
+    if (document.getElementById('mainForm:x:4').checked) return 0;
+    if (document.getElementById('mainForm:x:5').checked) return 1;
+    if (document.getElementById('mainForm:x:6').checked) return 2;
+    if (document.getElementById('mainForm:x:7').checked) return 3;
+    if (document.getElementById('mainForm:x:8').checked) return 4;
 }

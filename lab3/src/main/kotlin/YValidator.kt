@@ -15,7 +15,7 @@ class YValidator: Validator{
         if (value !is Double) {
            throw ValidatorException(FacesMessage("Введите ЧИСЛО!"))
         } else
-        if (value < -3 || value > 5){
+        if (value <= -3 || value >= 5){
             throw ValidatorException(FacesMessage("Число от -3 до 5!"))
         }
     }
