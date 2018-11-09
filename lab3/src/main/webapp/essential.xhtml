@@ -61,7 +61,7 @@
         <h:panelGrid columns="1" style="margin-bottom: 10px">
             <p:outputLabel for="r" value="R:" />
             <p:inputText id="r" value="#{areaCheckBean.r}"  onkeydown="return false;"/>
-            <p:slider for="r" minValue="1" maxValue="4" step="0.25"/>
+            <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="redraw()"/>
         </h:panelGrid>
         <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form" onclick="addPointFromForm()"/>
     </h:form>

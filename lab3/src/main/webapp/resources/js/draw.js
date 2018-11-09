@@ -1,5 +1,7 @@
 var pt;
 
+var points = []; //пока пусть сюда сохраняется
+
 document.addEventListener('DOMContentLoaded', function(){
     pt = document.getElementById('batman').createSVGPoint();
 });
@@ -9,38 +11,41 @@ function getPoint(event) {
     var y = event.clientY;
     var cursorpt =  pt.matrixTransform(document.getElementById('batman').getScreenCTM().inverse());
     var r = document.getElementById('mainForm:r').value;
-    document.getElementById("batman_x").innerHTML = r;
-    document.getElementById("batman_y").innerHTML = r/2;
-    //TODO сохранить точку
-    redraw(x+cursorpt.x, y+cursorpt.y, r);
+    points.push([(x+cursorpt.x - 227) * r /217, (y+cursorpt.y - 103) * r / 186]);
+    redraw();
 }
 
 function addPointFromForm() {
     var r = document.getElementById('mainForm:r').value;
     var x = getX();
     var y = document.getElementById('mainForm:y').value;
-    document.getElementById("batman_x").innerHTML = r;
-    document.getElementById("batman_y").innerHTML = r/2;
     //TODO обработать числа с запятой
-    //TODO сохранить точку
-    x = 217 / r * x + 227;
-    y = 186 / r * y + 103;
-    redraw(x, y, r)
+    points.push([x, y]);
+    redraw();
 }
 
-function redraw(elemX, elemY, elemR){
-    var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-    c.setAttribute('cx', elemX);
-    c.setAttribute('class','point');
-    c.setAttribute('cy',elemY);
-    c.setAttribute('r','3');
-    c.setAttribute('stroke', 'black');
-    if (true) {
-        c.style.fill='green';
-    } else {
-        c.style.fill='red';
+function redraw(){
+    var r = document.getElementById('mainForm:r').value;
+    document.getElementById("batman_x").innerHTML = r;
+    document.getElementById("batman_y").innerHTML = r/2;
+    $(".point").remove();
+    console.log(points);
+    for (var i=0; i<points.length; i++) {
+        var cx = 217 / r * points[i][0] + 227;
+        var cy = 186 / r * points[i][1] + 103;
+        var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+        c.setAttribute('cx', cx);
+        c.setAttribute('class', 'point');
+        c.setAttribute('cy', cy);
+        c.setAttribute('r', '3');
+        c.setAttribute('stroke', 'black');
+        if (true) {
+            c.style.fill = 'green';
+        } else {
+            c.style.fill = 'red';
+        }
+        document.getElementById('batman').appendChild(c);
     }
-    document.getElementById('batman').appendChild(c);
 }
 
 function getX() {
