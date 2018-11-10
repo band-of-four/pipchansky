@@ -2,11 +2,11 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
+@Table(name = "client")
 class User : Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Long? = null
 
   var username: String? = null

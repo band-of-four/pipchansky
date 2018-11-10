@@ -6,7 +6,6 @@ import org.hibernate.cfg.Configuration
 import User
 import RequestResult
 
-
 object HibernateUtil {
   private var sessionFactory: SessionFactory? = null
 

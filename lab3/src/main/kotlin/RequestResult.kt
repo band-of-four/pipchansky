@@ -6,7 +6,7 @@ import javax.persistence.*
 class RequestResult() : Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   var id: Long? = null
 
   var x: Double = 0.0
