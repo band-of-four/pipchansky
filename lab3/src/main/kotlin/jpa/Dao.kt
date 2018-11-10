@@ -4,9 +4,9 @@ import java.util.*
 
 interface Dao<T> {
 
-  fun get(id: Long): T?
+  fun findById(id: Long): T?
 
-  fun getAll(): List<T>
+  fun findAll(): List<T>
 
   fun save(t: T)
 

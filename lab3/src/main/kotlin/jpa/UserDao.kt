@@ -3,23 +3,36 @@ package jpa
 import User
 
 class UserDao : Dao<User> {
-  override fun get(id: Long): User? {
-    TODO("not implemented")
+  override fun findById(id: Long): User? {
+    return HibernateUtil.getSessionFactory()?.openSession()?.get(User::class.java, id)
   }
 
-  override fun getAll(): List<User> {
-    TODO("not implemented")
+  override fun findAll(): List<User> {
+    return HibernateUtil.getSessionFactory()?.openSession()?.createQuery("from user")
+        ?.list() as ArrayList<User>
   }
 
   override fun save(t: User) {
-    TODO("not implemented")
+    val session = HibernateUtil.getSessionFactory()?.openSession()
+    val transaction = session?.beginTransaction()
+    session?.save(t)
+    transaction?.commit()
+    session?.close()
   }
 
   override fun update(t: User, params: Array<String>) {
-    TODO("not implemented")
+    val session = HibernateUtil.getSessionFactory()?.openSession()
+    val transaction = session?.beginTransaction()
+    session?.update(t)
+    transaction?.commit()
+    session?.close()
   }
 
   override fun delete(t: User) {
-    TODO("not implemented")
+    val session = HibernateUtil.getSessionFactory()?.openSession()
+    val transaction = session?.beginTransaction()
+    session?.delete(t)
+    transaction?.commit()
+    session?.close()
   }
 }
