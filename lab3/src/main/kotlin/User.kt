@@ -7,6 +7,7 @@ class User : Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "client_id")
   var id: Long? = null
 
   var username: String? = null

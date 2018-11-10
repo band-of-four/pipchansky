@@ -8,8 +8,8 @@ class UserDao : Dao<User> {
   }
 
   override fun findAll(): List<User> {
-    return HibernateUtil.getSessionFactory()?.openSession()?.createQuery("from user")
-        ?.list() as ArrayList<User>
+    return HibernateUtil.getSessionFactory()?.openSession()?.createQuery("from User")
+        ?.list() as List<User>
   }
 
   override fun save(t: User) {
