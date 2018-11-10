@@ -6,6 +6,14 @@ class AreaCheckBean : Serializable {
   var y = 0.0
   var r = 1.0
 
+  constructor(){
+    points.add(1);
+    points.add(1);
+    points.add(1);
+  }
+
+  var points = ArrayList<Int>();
+
   fun tryHit() {
     if (!validate()) return
     history.add(RequestResult(x, y, r, checkHit()))
@@ -18,5 +26,9 @@ class AreaCheckBean : Serializable {
   private fun checkHit(): Boolean {
     // TODO add implementation for checking area hit
     return true
+  }
+
+  public fun getPoints() : List<Int>{
+    return points;
   }
 }
