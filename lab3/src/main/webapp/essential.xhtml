@@ -62,7 +62,8 @@
 
         <p:outputLabel for="y" value="Y: " />
         <br/>
-        <h:inputText id="y" value="#{areaCheckBean.y}" required="true" converterMessage="Введите ЧИСЛО от -3 до 5!">
+        <h:inputText id="y" value="#{areaCheckBean.y}" required="true" converterMessage="Введите ЧИСЛО от -3 до 5!"
+                     onkeypress="if (event.keyCode === 13) { document.getElementById('mainForm:submit').click(); return false; }">
             <f:validator validatorId="yValidator" />
         </h:inputText>
 
@@ -74,7 +75,7 @@
             <p:commandButton style="display:none" update="graphPanel" action="#{areaCheckBean.click}" id="hiddenBtn" process="@form"/>
             <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="document.getElementById('mainForm:hiddenBtn').click()"/>
         </h:panelGrid>
-        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
+        <p:commandButton id="submit" value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
 
         <h:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem">
 
