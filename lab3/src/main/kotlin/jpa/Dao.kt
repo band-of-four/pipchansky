@@ -1,7 +1,5 @@
 package jpa
 
-import java.util.*
-
 interface Dao<T> {
 
   fun findById(id: Long): T?
