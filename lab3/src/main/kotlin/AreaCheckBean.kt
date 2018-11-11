@@ -7,14 +7,14 @@ class AreaCheckBean : Serializable {
   var y = 0.0
   var r = 1.0
 
-  var hiddenX = 0.0;
-  var hiddenY = 0.0;
+  var hiddenX = 0.0
+  var hiddenY = 0.0
 
-  var points = ArrayList<Point>();
+  var points = ArrayList<Point>()
 
   fun tryHit() {
     if (!validate()) return
-    val hit = checkHit(x,y,r);
+    val hit = checkHit(x,y,r)
     history.add(RequestResult(round(x*1000)/1000, round(y*1000)/1000, r, hit))
     points.add(Point(x, y, hit))
   }

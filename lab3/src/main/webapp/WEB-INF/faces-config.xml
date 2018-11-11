@@ -27,7 +27,7 @@
 
     <managed-bean>
         <managed-bean-name>authBean</managed-bean-name>
-        <managed-bean-class>AuthBeanOld</managed-bean-class>
+        <managed-bean-class>AuthBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
             <property-name>navigationController</property-name>
