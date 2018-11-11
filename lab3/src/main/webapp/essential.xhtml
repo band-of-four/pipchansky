@@ -19,6 +19,7 @@
         <ui:include src="resources/templates/header.xhtml"/>
     </ui:insert>
 
+
     <h1>This is the main page</h1>
 
     <h:form id="mainForm">
@@ -76,7 +77,6 @@
             <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="document.getElementById('mainForm:hiddenBtn').click()"/>
         </h:panelGrid>
         <p:commandButton id="submit" value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
-
         <h:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem">
 
             <h:column>
@@ -103,11 +103,8 @@
 
 
         </h:dataTable>
-    </h:form>
-
-    <h:form>
         <h:commandLink action="#{navigationController.moveToIndex}"
-                       value="Start page"/>
+                       value="Start page" ajax="false"/>
     </h:form>
 </h:body>
 

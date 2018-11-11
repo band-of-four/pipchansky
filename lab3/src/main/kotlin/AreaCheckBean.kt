@@ -15,14 +15,14 @@ class AreaCheckBean : Serializable {
   fun tryHit() {
     if (!validate()) return
     val hit = checkHit(x,y,r);
-    history.add(RequestResult(x, y, r, hit))
+    history.add(RequestResult(round(x*1000)/1000, round(y*1000)/1000, r, hit))
     points.add(Point(x, y, hit))
   }
 
   fun areaClick(){
     if (!validate()) return
     val hit = checkHit(hiddenX, hiddenY, r);
-    history.add(RequestResult(hiddenX, hiddenY, r, hit))
+    history.add(RequestResult(round(hiddenX*1000)/1000, round(hiddenY*1000)/1000, r, hit))
     points.add(Point(hiddenX, hiddenY, hit))
   }
 
