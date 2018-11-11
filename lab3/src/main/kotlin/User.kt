@@ -13,9 +13,9 @@ class User : Serializable {
   var username: String? = null
   var password: String? = null
 
-  @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", targetEntity = RequestResult::class, cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
   var history: List<RequestResult>? = null
 
-  @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "user", targetEntity = Group::class, cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
   var groups: List<Group>? = null
 }
