@@ -10,7 +10,7 @@ interface Dao<T> {
 
   fun save(t: T)
 
-  fun update(t: T, params: Array<String>)
+  fun update(t: T)
 
   fun delete(t: T)
 

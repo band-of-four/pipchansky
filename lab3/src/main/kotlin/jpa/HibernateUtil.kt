@@ -8,7 +8,6 @@ import RequestResult
 
 object HibernateUtil {
   private var sessionFactory: SessionFactory? = null
-
   fun getSessionFactory(): SessionFactory? {
     if (sessionFactory == null) {
       try {

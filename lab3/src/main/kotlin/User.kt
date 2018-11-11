@@ -13,7 +13,7 @@ class User : Serializable {
   var username: String? = null
   var password: String? = null
 
-  @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
   var history: List<RequestResult>? = null
 
 }
