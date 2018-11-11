@@ -1,4 +1,3 @@
-import jpa.UserService
 import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.sql.SQLIntegrityConstraintViolationException
@@ -8,7 +7,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
 import javax.sql.DataSource
 
-class AuthBean(var username: String? = null, var password: String? = null) {
+class AuthBeanOld(var username: String? = null, var password: String? = null) {
 
   var navigationController: NavigationController? = null
 
@@ -30,29 +29,33 @@ class AuthBean(var username: String? = null, var password: String? = null) {
   }
 
   fun signup(): String? {
+    /* Might as well be plaintext... */
     val passwordDigest = MessageDigest.getInstance("SHA-256")
     val sha256password = hexEncode(synchronized(passwordDigest) {
       passwordDigest.reset()
       passwordDigest.digest(password?.toByteArray(Charset.forName("UTF-8")))
     })
 
-    val userToInsert = User().apply {
-      username = this@AuthBean.username
-      password = sha256password
-      history = emptyList()
-    }
-    userToInsert.groups = ArrayList<Group>().apply {
-      add(Group(userToInsert.username!!, "user", userToInsert))
-    }
+    val conn = dataSource?.connection
+    val userInsertQuery = conn?.prepareStatement("insert into users values (?, ?)")
+    userInsertQuery?.setString(1, username)
+    userInsertQuery?.setString(2, sha256password)
+    val groupInsertQuery = conn?.prepareStatement("insert into groups values (?, ?)")
+    groupInsertQuery?.setString(1, "user")
+    groupInsertQuery?.setString(2, username)
 
-    val userService = UserService()
     try {
-      userService.saveUser(userToInsert)
+      conn?.autoCommit = false
+      userInsertQuery?.executeUpdate()
+      groupInsertQuery?.executeUpdate()
+      conn?.commit()
       return login()
     } catch (e: SQLIntegrityConstraintViolationException) {
       // TODO username already exists
+      conn?.rollback()
+    } finally {
+      conn?.close()
     }
-
     return null
   }
 

@@ -2,7 +2,7 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
-@Table(name = "result")
+@Table(name = "results")
 class RequestResult() : Serializable {
 
   @Id

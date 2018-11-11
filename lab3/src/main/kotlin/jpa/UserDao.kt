@@ -1,9 +1,11 @@
 package jpa
 
 import User
+import org.hibernate.HibernateException
 
-// TODO handle HibernateException inside every function
 class UserDao : Dao<User> {
+
+  @Throws(HibernateException::class)
   override fun findById(id: Long): User? {
     val session = HibernateUtil.getSessionFactory()?.openSession()
     val response = session?.get(User::class.java, id)
@@ -11,6 +13,7 @@ class UserDao : Dao<User> {
     return response
   }
 
+  @Throws(HibernateException::class)
   override fun findAll(): List<User> {
     val session = HibernateUtil.getSessionFactory()?.openSession()
     val response = session?.createQuery("from User")?.list() as List<User>
@@ -18,7 +21,7 @@ class UserDao : Dao<User> {
     return response
   }
 
-  // TODO should returns id
+  @Throws(HibernateException::class)
   override fun save(t: User) {
     val session = HibernateUtil.getSessionFactory()?.openSession()
     val transaction = session?.beginTransaction()
@@ -27,6 +30,7 @@ class UserDao : Dao<User> {
     session?.close()
   }
 
+  @Throws(HibernateException::class)
   override fun update(t: User) {
     val session = HibernateUtil.getSessionFactory()?.openSession()
     val transaction = session?.beginTransaction()
@@ -35,6 +39,7 @@ class UserDao : Dao<User> {
     session?.close()
   }
 
+  @Throws(HibernateException::class)
   override fun delete(t: User) {
     val session = HibernateUtil.getSessionFactory()?.openSession()
     val transaction = session?.beginTransaction()

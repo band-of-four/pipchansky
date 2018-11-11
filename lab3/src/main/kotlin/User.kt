@@ -2,7 +2,7 @@ import java.io.Serializable
 import javax.persistence.*
 
 @Entity
-@Table(name = "client")
+@Table(name = "users")
 class User : Serializable {
 
   @Id
@@ -16,4 +16,6 @@ class User : Serializable {
   @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
   var history: List<RequestResult>? = null
 
+  @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
+  var groups: List<Group>? = null
 }

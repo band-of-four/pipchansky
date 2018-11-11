@@ -7,7 +7,7 @@ import User
  *         We should not use the UserDao for that for separating business logic and database access.
  **/
 class UserService {
-  val userDao = UserDao()
+  private val userDao = UserDao()
 
   fun findUser(id: Long) : User? {
     return userDao.findById(id)
