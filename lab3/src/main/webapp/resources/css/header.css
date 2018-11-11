@@ -27,3 +27,41 @@
     background: lightblue;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
 }
+
+.ui-outputlabel .ui-outputlabel-rfi {
+    font-size: 0;
+}
+
+.ui-widget input{
+    padding: 4px;
+    border-radius: 3px;
+    font-size: 1em;
+    border-width: 1px;
+    border-style: inset;
+    -webkit-box-shadow: inset 0 0 0 #8f8f8f;
+    box-shadow: inset 0 0 0 #8f8f8f;
+    outline: medium none;
+    border-color: gray;
+    border-image: none;
+}
+
+.res{
+    border-collapse: collapse;
+    width: 454px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+table.res td  {
+    border: 1px solid black;
+    text-align: center;
+    padding: 4px
+}
+
+table.res th  {
+    border: 1px solid black;
+    text-align: center;
+    height: 40px;
+    vertical-align: bottom;
+    padding: 0;
+}

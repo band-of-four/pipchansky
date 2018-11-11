@@ -81,7 +81,7 @@ class AreaCheckBean : Serializable {
             y1 <= -(0.12727*x1 - 0.0049978457)/0.036866){
       return true
     }
-    if (x1 in (-0.0691 .. 0.0691) && y1 >= 0 && y <= 0.376){
+    if (x1 in (-0.0691 .. 0.0691) && y1 >= 0 && y1 <= 0.376){
       return true
     }
 
