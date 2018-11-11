@@ -19,6 +19,11 @@ class RequestResult() : Serializable {
   @JoinColumn(name = "client_id", nullable = false)
   var user: User? = null
 
-  constructor(x: Double, y: Double, r: Double, isHit: Boolean) : this()
+  constructor(x: Double, y: Double, r: Double, isHit: Boolean) : this() {
+    this.x = x
+    this.y = y
+    this.r = r
+    this.isHit = isHit
+  }
 
 }

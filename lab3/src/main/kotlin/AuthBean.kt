@@ -42,7 +42,7 @@ class AuthBean(var username: String? = null, var password: String? = null) {
       history = emptyList()
     }
     userToInsert.groups = ArrayList<Group>().apply {
-      add(Group(userToInsert.username!!, "user", userToInsert))
+      add(Group("user", userToInsert))
     }
 
     val userService = UserService()

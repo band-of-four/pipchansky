@@ -16,8 +16,8 @@ class Group() : Serializable {
   @JoinColumn(name = "client_id", nullable = false)
   var user: User? = null
 
-  constructor(username: String, groupname: String, user: User) : this() {
-    this.username = username
+  constructor(groupname: String, user: User) : this() {
+    this.username = user.username
     this.groupname = groupname
     this.user = user
   }

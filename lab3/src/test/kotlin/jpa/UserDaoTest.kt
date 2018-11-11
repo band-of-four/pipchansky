@@ -2,9 +2,9 @@ package jpa
 
 import org.junit.Test
 import User
+import Group
 import RequestResult
 import org.junit.Assert.*
-import org.junit.Before
 
 class UserDaoTest {
   @Test
@@ -25,6 +25,9 @@ class UserDaoTest {
     val user = User().apply {
       username = "user1"
       password = "password1"
+    }
+    user.groups = ArrayList<Group>().apply {
+      add(Group("user", user))
     }
 
     user.history = ArrayList<RequestResult>().apply {
