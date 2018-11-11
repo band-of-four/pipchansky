@@ -8,7 +8,7 @@
         <description>Navigation controller bean</description>
         <managed-bean-name>navigationController</managed-bean-name>
         <managed-bean-class>NavigationController</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>
@@ -23,6 +23,16 @@
         <managed-bean-name>areaCheckBean</managed-bean-name>
         <managed-bean-class>AreaCheckBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>authBean</managed-bean-name>
+        <managed-bean-class>AuthBeanOld</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>navigationController</property-name>
+            <value>#{navigationController}</value>
+        </managed-property>
     </managed-bean>
 
 </faces-config>

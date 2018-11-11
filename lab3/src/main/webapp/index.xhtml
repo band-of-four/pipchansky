@@ -25,8 +25,14 @@
     </h3>
 
     <h:form>
-        <h:commandLink action="#{navigationController.moveToEssential}"
-                       value="Main page"/>
+        <h:commandLink action="#{navigationController.moveToEssential}" value="Main page"/>
+    </h:form>
+
+    <h:form>
+        <h:inputText value="#{authBean.username}"/><br/>
+        <h:inputSecret value="#{authBean.password}"/><br/>
+        <h:commandButton value="SignUp!" action="#{authBean.signup}"/>
+        <h:commandButton value="Login" action="#{authBean.login}"/><br/>
     </h:form>
 
     <script type="text/javascript">
