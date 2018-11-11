@@ -21,23 +21,33 @@
 
     <h1>This is the main page</h1>
 
-    <svg id="batman" width="454" height="206" onclick="getPoint(event)" xmlns="http://www.w3.org/2000/svg">
-        <line x1="227" y1="0" x2="227" y2="206" style="stroke:rgb(100,100,100);stroke-width:1"/>
-        <line x1="0" y1="103" x2="454" y2="103" style="stroke:rgb(100,100,100);stroke-width:1"/>
-        <defs>
-            <pattern id="image" patternUnits="userSpaceOnUse" width="454" height="206">
-                <image x="0" y="0" width="454" height="206" xlink:href="resources/img/batman.svg"/>
-            </pattern>
-        </defs>
-        <polygon points="0,0 454,0 454,206 0,206" fill="url(#image)"/>
-        <text id="batman_x" x="445" y="115" font-family="monospace" font-size="14" fill="gray">1</text>
-        <text id="batman_y" x="228" y="13" font-family="monospace" font-size="14" fill="gray">0.5</text>
-
-    </svg>
-
     <h:form id="mainForm">
+        <p:outputPanel id="graphPanel">
+            <svg id="batman" width="454" height="206" onclick="getPoint(event)" xmlns="http://www.w3.org/2000/svg">
+                <line x1="227" y1="0" x2="227" y2="206" style="stroke:rgb(100,100,100);stroke-width:1"/>
+                <line x1="0" y1="103" x2="454" y2="103" style="stroke:rgb(100,100,100);stroke-width:1"/>
+                <defs>
+                    <pattern id="image" patternUnits="userSpaceOnUse" width="454" height="206">
+                        <image x="0" y="0" width="454" height="206" xlink:href="resources/img/batman.svg"/>
+                    </pattern>
+                </defs>
+                <polygon points="0,0 454,0 454,206 0,206" fill="url(#image)"/>
+                <text id="batman_x" x="445" y="115" font-family="monospace" font-size="14" fill="gray">#{areaCheckBean.r}</text>
+                <text id="batman_y" x="228" y="13" font-family="monospace" font-size="14" fill="gray">#{areaCheckBean.r/2}</text>
+                <ui:repeat value="#{areaCheckBean.points}" var="point">
+                    <circle cx="#{217 / areaCheckBean.r * point.x + 227}" cy="#{206 - (186 / areaCheckBean.r * point.y + 103)}" stroke="black" fill="#{point.hit eq true ? 'green' : 'red'}" class="point" r="3"/>
+                </ui:repeat>
+            </svg>
+
+            <p:inputText type="hidden" id="hiddenX" value="#{areaCheckBean.hiddenX}"/>
+            <p:inputText type="hidden" id="hiddenY" value="#{areaCheckBean.hiddenY}"/>
+        </p:outputPanel>
+
+        <p:commandButton style="display:none" update="graphPanel" actionListener="#{areaCheckBean.areaClick}" id="areaClickBtn" process="@form"/>
+
         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-            <p:outputLabel for="x" value="X:"/>
+            <p:outputLabel style="margin: 0;" for="x" value="X:" />
+
             <h:selectOneRadio id="x" value="#{areaCheckBean.x}">
                 <f:selectItem itemLabel="-4" itemValue="-4"/>
                 <f:selectItem itemLabel="-3" itemValue="-3"/>
@@ -51,60 +61,51 @@
             </h:selectOneRadio>
         </h:panelGrid>
 
-        <p:outputLabel for="y" value="Y:"/>
-        <h:inputText id="y" value="#{areaCheckBean.y}" required="true" converterMessage="Введите ЧИСЛО от -3 до 5!">
-            <f:validator validatorId="yValidator"/>
+        <p:outputLabel for="y" value="Y: " />
+        <br/>
+        <h:inputText id="y" value="#{areaCheckBean.y}" required="true" converterMessage="Введите ЧИСЛО от -3 до 5!"
+                     onkeypress="if (event.keyCode === 13) { document.getElementById('mainForm:submit').click(); return false; }">
+            <f:validator validatorId="yValidator" />
         </h:inputText>
 
-        <h:message for="y" style="color:red"/>
+        <h:message for = "y" style = "color:red; margin: 7px;" />
 
         <h:panelGrid columns="1" style="margin-bottom: 10px">
-            <p:outputLabel for="r" value="R:"/>
-            <p:inputText id="r" value="#{areaCheckBean.r}" onkeydown="return false;"/>
-            <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="redraw()"/>
+            <p:outputLabel for="r" value="R:" />
+            <p:inputText id="r" value="#{areaCheckBean.r}"  onkeydown="return false;"/>
+            <p:commandButton style="display:none" update="graphPanel" action="#{areaCheckBean.click}" id="hiddenBtn" process="@form"/>
+            <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="document.getElementById('mainForm:hiddenBtn').click()"/>
         </h:panelGrid>
-        <p:commandButton value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable @form"
-                         onclick="addPointFromForm()"/>
+        <p:commandButton id="submit" value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
+        <h:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem">
+
+            <h:column>
+                <!-- column header -->
+                <f:facet name="header">X</f:facet>
+                <!-- row record -->
+                #{elem.x}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">Y</f:facet>
+                #{elem.y}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">R</f:facet>
+                #{elem.r}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">IsHit</f:facet>
+                #{elem.hit}
+            </h:column>
+
+
+        </h:dataTable>
+        <h:commandLink action="#{navigationController.moveToIndex}"
+                       value="Start page" ajax="false"/>
     </h:form>
-
-    <h:form>
-        <h:commandLink action="#{navigationController.moveToIndex}" value="Start page"/>
-    </h:form>
-
-    <br/>
-
-    <h:form>
-        <h:commandLink action="#{authBean.logout}" value="Logout"/>
-    </h:form>
-
-    <br/>
-
-    <h:dataTable id="resultsTable" value="#{areaCheckBean.resultsArray}" var="elem">
-
-        <h:column>
-            <!-- column header -->
-            <f:facet name="header">X</f:facet>
-            <!-- row record -->
-            #{elem.x}
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">Y</f:facet>
-            #{elem.y}
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">R</f:facet>
-            #{elem.r}
-        </h:column>
-
-        <h:column>
-            <f:facet name="header">IsHit</f:facet>
-            #{elem.hit}
-        </h:column>
-
-
-    </h:dataTable>
 </h:body>
 
 </html>
