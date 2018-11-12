@@ -65,4 +65,14 @@
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
 
+    <filter>
+        <filter-name>LoginPageFilter</filter-name>
+        <filter-class>LoginPageFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>LoginPageFilter</filter-name>
+        <url-pattern>/index.xhtml</url-pattern>
+    </filter-mapping>
+
 </web-app>

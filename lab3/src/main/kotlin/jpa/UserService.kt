@@ -13,8 +13,8 @@ class UserService {
     return userDao.findById(id)
   }
 
-  fun saveUser(user: User) {
-    userDao.save(user)
+  fun saveUser(user: User): Long? {
+    return userDao.save(user)
   }
 
   fun updateUser(user: User) {

@@ -25,13 +25,13 @@ class UserDao : Dao<User> {
   }
 
   @Throws(HibernateException::class, RollbackException::class)
-  override fun save(t: User): Long {
+  override fun save(t: User): Long? {
     var session: Session? = null
     var transaction: Transaction? = null
     try {
       session = HibernateUtil.getSessionFactory()?.openSession()
       transaction = session?.beginTransaction()
-      val id = session?.save(t) as Long
+      val id = session?.save(t) as Long?
       transaction?.commit()
       return id
     } catch (e: RollbackException) {

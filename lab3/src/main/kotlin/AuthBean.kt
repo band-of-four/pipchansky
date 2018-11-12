@@ -1,7 +1,6 @@
 import jpa.UserService
 import java.nio.charset.Charset
 import java.security.MessageDigest
-import java.sql.SQLIntegrityConstraintViolationException
 import javax.annotation.Resource
 import javax.faces.context.FacesContext
 import javax.servlet.http.HttpServletRequest
@@ -23,9 +22,7 @@ class AuthBean(var username: String? = null, var password: String? = null) {
       (context.getSession(true) as HttpSession).setAttribute("username", username)
       navigationController?.moveToEssential()
     } catch (e: Exception) {
-      throw e
-      // TODO show error message
-      null
+      throw IllegalArgumentException("Wrong login or password!")
     }
   }
 
@@ -39,26 +36,34 @@ class AuthBean(var username: String? = null, var password: String? = null) {
     val userToInsert = User().apply {
       username = this@AuthBean.username
       password = sha256password
-      history = emptyList()
+      history = ArrayList<RequestResult>()
     }
     userToInsert.groups = ArrayList<Group>().apply {
       add(Group("user", userToInsert))
     }
 
     val userService = UserService()
-    try {
-      userService.saveUser(userToInsert)
-      return login()
-    } catch (e: SQLIntegrityConstraintViolationException) {
-      // TODO username already exists
+    val users = userService.findAllUsers() // FIXME haha, is there any way better ?
+    val registered = users.find { it.username == userToInsert.username }
+    if (registered != null) {
+      // TODO user already exists
+      throw IllegalArgumentException("User already exists!")
     }
-
-    return null
+    userService.saveUser(userToInsert)
+    return login()
   }
 
   fun logout(): String? = let {
     FacesContext.getCurrentInstance().externalContext.invalidateSession()
     navigationController?.moveToIndex()
+  }
+
+  fun checkAuthentication() {
+    val externalContext = FacesContext.getCurrentInstance().externalContext
+
+    if (externalContext.userPrincipal != null) {
+      externalContext.redirect(externalContext.requestContextPath + "/essential.xhtml")
+    }
   }
 
   private fun hexEncode(bytes: ByteArray): String {

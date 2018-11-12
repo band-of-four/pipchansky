@@ -6,7 +6,7 @@ interface Dao<T> {
 
   fun findAll(): List<T>
 
-  fun save(t: T): Long
+  fun save(t: T): Long?
 
   fun update(t: T)
 
