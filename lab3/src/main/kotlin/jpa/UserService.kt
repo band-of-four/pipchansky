@@ -18,9 +18,8 @@ class UserService {
   }
 
   fun updateUser(user: User) {
-    // Cause is under the hood the save method calls saveOrUpdate
     // We shouldn't use the update method directly for safety
-    userDao.save(user)
+    userDao.saveOrUpdate(user)
   }
 
   fun deleteUser(user: User) {

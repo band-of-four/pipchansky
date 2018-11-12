@@ -1,1 +1,1 @@
-class Point(var x: Double, var y: Double, var hit: Boolean) { }
+class Point(var x: Double, var y: Double, var hit: Boolean)

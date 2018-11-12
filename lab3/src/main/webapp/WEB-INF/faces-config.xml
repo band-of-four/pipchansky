@@ -23,6 +23,17 @@
         <managed-bean-name>areaCheckBean</managed-bean-name>
         <managed-bean-class>AreaCheckBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>historyBean</property-name>
+            <value>#{historyBean}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <description>History bob</description>
+        <managed-bean-name>historyBean</managed-bean-name>
+        <managed-bean-class>HistoryBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
     <managed-bean>

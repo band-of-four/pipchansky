@@ -22,6 +22,7 @@ class AuthBean(var username: String? = null, var password: String? = null) {
       (context.getSession(true) as HttpSession).setAttribute("username", username)
       navigationController?.moveToEssential()
     } catch (e: Exception) {
+      // TODO wrong login or password
       throw IllegalArgumentException("Wrong login or password!")
     }
   }

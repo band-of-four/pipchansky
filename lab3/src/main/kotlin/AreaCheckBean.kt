@@ -1,8 +1,9 @@
 import java.io.Serializable
-import kotlin.math.*;
+import kotlin.math.*
 
 class AreaCheckBean : Serializable {
-  private val history = ArrayList<RequestResult>()
+  // private val history = ArrayList<RequestResult>()
+  var historyBean: HistoryBean? = null
   var x = 0.0
   var y = 0.0
   var r = 1.0
@@ -14,23 +15,23 @@ class AreaCheckBean : Serializable {
 
   fun tryHit() {
     if (!validate()) return
-    val hit = checkHit(x,y,r)
-    history.add(RequestResult(round(x*1000)/1000, round(y*1000)/1000, r, hit))
+    val hit = checkHit(x, y, r)
+    historyBean?.addRequestResult(RequestResult(round(x*1000)/1000, round(y*1000)/1000, r, hit))
     points.add(Point(x, y, hit))
   }
 
-  fun areaClick(){
+  fun areaClick() {
     if (!validate()) return
-    val hit = checkHit(hiddenX, hiddenY, r);
-    history.add(RequestResult(round(hiddenX*1000)/1000, round(hiddenY*1000)/1000, r, hit))
+    val hit = checkHit(hiddenX, hiddenY, r)
+    historyBean?.addRequestResult(RequestResult(round(hiddenX*1000)/1000, round(hiddenY*1000)/1000, r, hit))
     points.add(Point(hiddenX, hiddenY, hit))
   }
 
   fun click() {
-    points.map { it.hit = checkHit(it.x,it.y,r) }
+    points.map { it.hit = checkHit(it.x, it.y, r) }
   }
 
-  fun getResultsArray() = history.toTypedArray()
+  // fun getResultsArray() = history.toTypedArray()
 
   private fun validate() = r in (1..4) && x in (-4..4) && y in (-3..5)
 

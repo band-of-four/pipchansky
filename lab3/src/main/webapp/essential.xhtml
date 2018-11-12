@@ -15,6 +15,10 @@
 
 <h:body>
 
+    <f:metadata>
+        <f:viewAction action="#{historyBean.initialize}" />
+    </f:metadata>
+
     <ui:insert name="header">
         <ui:include src="resources/templates/header.xhtml"/>
     </ui:insert>
@@ -77,7 +81,7 @@
             <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="document.getElementById('mainForm:hiddenBtn').click()"/>
         </h:panelGrid>
         <p:commandButton id="submit" value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
-        <p:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem" paginator="true" rows="10"
+        <p:dataTable id="resultsTable" class="res" value="#{historyBean.resultsArray}" var="elem" paginator="true" rows="10"
                      paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                      rowsPerPageTemplate="5,10,15">
 
