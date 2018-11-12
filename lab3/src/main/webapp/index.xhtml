@@ -18,6 +18,8 @@
 
     <h3>What about minimalism?</h3>
 
+    <h:outputLabel value="#{messageBean.currentMessage}" rendered="#{not empty messageBean.currentMessage}" />
+
     <h3>
         <h:form id="clockForm">
             <h:inputHidden id="timezone" value="#{clockBean.zoneName}"/>

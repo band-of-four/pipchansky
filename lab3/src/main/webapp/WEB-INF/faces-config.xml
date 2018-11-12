@@ -37,12 +37,23 @@
     </managed-bean>
 
     <managed-bean>
+        <description>Bean for messaging between front and back</description>
+        <managed-bean-name>messageBean</managed-bean-name>
+        <managed-bean-class>MessageBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
+    <managed-bean>
         <managed-bean-name>authBean</managed-bean-name>
         <managed-bean-class>AuthBean</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
         <managed-property>
             <property-name>navigationController</property-name>
             <value>#{navigationController}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>messageBean</property-name>
+            <value>#{messageBean}</value>
         </managed-property>
     </managed-bean>
 

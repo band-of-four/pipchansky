@@ -1,18 +1,14 @@
 import jpa.UserService
 import java.nio.charset.Charset
 import java.security.MessageDigest
-import javax.annotation.Resource
 import javax.faces.context.FacesContext
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
-import javax.sql.DataSource
 
 class AuthBean(var username: String? = null, var password: String? = null) {
 
   var navigationController: NavigationController? = null
-
-  @Resource(lookup = "jdbc/OJdbcPool")
-  var dataSource: DataSource? = null
+  var messageBean: MessageBean? = null
 
   fun login(): String? {
     val context = FacesContext.getCurrentInstance().externalContext
@@ -20,10 +16,11 @@ class AuthBean(var username: String? = null, var password: String? = null) {
     return try {
       request.login(username, password)
       (context.getSession(true) as HttpSession).setAttribute("username", username)
+      messageBean?.allRight()
       navigationController?.moveToEssential()
     } catch (e: Exception) {
-      // TODO wrong login or password
-      throw IllegalArgumentException("Wrong login or password!")
+      messageBean?.authorizationFailed()
+      return null
     }
   }
 
@@ -47,11 +44,22 @@ class AuthBean(var username: String? = null, var password: String? = null) {
     val users = userService.findAllUsers() // FIXME haha, is there any way better ?
     val registered = users.find { it.username == userToInsert.username }
     if (registered != null) {
-      // TODO user already exists
-      throw IllegalArgumentException("User already exists!")
+      messageBean?.usernameTaken()
+      return null
     }
     userService.saveUser(userToInsert)
-    return login()
+
+    val context = FacesContext.getCurrentInstance().externalContext
+    val request = context.request as HttpServletRequest
+    return try {
+      request.login(username, password)
+      (context.getSession(true) as HttpSession).setAttribute("username", username)
+      messageBean?.allRight()
+      navigationController?.moveToEssential()
+    } catch (e: Exception) {
+      messageBean?.dbConnectionProblem()
+      return null
+    }
   }
 
   fun logout(): String? = let {
