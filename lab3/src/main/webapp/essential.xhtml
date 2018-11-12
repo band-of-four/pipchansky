@@ -77,32 +77,31 @@
             <p:slider for="r" minValue="1" maxValue="4" step="0.25" onSlideEnd="document.getElementById('mainForm:hiddenBtn').click()"/>
         </h:panelGrid>
         <p:commandButton id="submit" value="Submit" action="#{areaCheckBean.tryHit()}" update="resultsTable graphPanel"/>
-        <h:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem">
+        <p:dataTable id="resultsTable" class="res" value="#{areaCheckBean.resultsArray}" var="elem" paginator="true" rows="10"
+                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                     rowsPerPageTemplate="5,10,15">
 
-            <h:column>
+            <p:column headerText="X">
                 <!-- column header -->
-                <f:facet name="header">X</f:facet>
                 <!-- row record -->
-                #{elem.x}
-            </h:column>
+                <h:outputText value="#{elem.x}"/>
+            </p:column>
 
-            <h:column>
-                <f:facet name="header">Y</f:facet>
-                #{elem.y}
-            </h:column>
+            <p:column headerText="Y">
+                <h:outputText value="#{elem.y}"/>
+            </p:column>
 
-            <h:column>
-                <f:facet name="header">R</f:facet>
-                #{elem.r}
-            </h:column>
+            <p:column headerText="R">
+                <h:outputText value="#{elem.r}"/>
 
-            <h:column>
-                <f:facet name="header">IsHit</f:facet>
-                #{elem.hit}
-            </h:column>
+            </p:column>
 
+            <p:column headerText="IsHit">
+                <h:outputText value="#{elem.hit}"/>
 
-        </h:dataTable>
+            </p:column>
+
+        </p:dataTable>
         <h:commandLink action="#{authBean.logout}" value="Logout" ajax="false"/>
     </h:form>
 </h:body>
