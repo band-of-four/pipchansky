@@ -16,6 +16,8 @@
         <ui:include src="resources/templates/header.xhtml"/>
     </ui:insert>
 
+    <h3>What about minimalism?</h3>
+
     <h3>
         <h:form id="clockForm">
             <h:inputHidden id="timezone" value="#{clockBean.zoneName}"/>
@@ -25,14 +27,16 @@
     </h3>
 
     <h:form>
-        <h:commandLink action="#{navigationController.moveToEssential}" value="Main page"/>
+        <h:commandLink action="#{navigationController.moveToEssential}" value="Main page"/><br/>
     </h:form>
 
     <h:form>
-        <h:inputText value="#{authBean.username}"/><br/>
-        <h:inputSecret value="#{authBean.password}"/><br/>
-        <h:commandButton value="SignUp!" action="#{authBean.signup}"/>
-        <h:commandButton value="Login" action="#{authBean.login}"/><br/>
+        <h:inputText id="username" value="#{authBean.username}"/><br/>
+        <p:watermark for="username" value="Username" />
+        <h:inputSecret id="password" value="#{authBean.password}"/><br/>
+        <p:watermark for="password" value="Password" />
+        <h:commandButton value="Sign up!" action="#{authBean.signup}"/>
+        <h:commandButton value="Login!" action="#{authBean.login}"/><br/>
     </h:form>
 
     <script type="text/javascript">

@@ -19,9 +19,13 @@ class UserDao : Dao<User> {
   @Throws(HibernateException::class)
   override fun findAll(): List<User> {
     val session = HibernateUtil.getSessionFactory()?.openSession()
-    val response = session?.createQuery("from User")?.list() as List<User>
+    val response = session?.createQuery("from User")?.list()
     session?.close()
-    return response
+    return if (response != null) {
+      response as List<User>
+    } else {
+      emptyList()
+    }
   }
 
   @Throws(HibernateException::class, RollbackException::class)

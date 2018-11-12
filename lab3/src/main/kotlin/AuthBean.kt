@@ -58,14 +58,6 @@ class AuthBean(var username: String? = null, var password: String? = null) {
     navigationController?.moveToIndex()
   }
 
-  fun checkAuthentication() {
-    val externalContext = FacesContext.getCurrentInstance().externalContext
-
-    if (externalContext.userPrincipal != null) {
-      externalContext.redirect(externalContext.requestContextPath + "/essential.xhtml")
-    }
-  }
-
   private fun hexEncode(bytes: ByteArray): String {
     val hexadecimal = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         'a', 'b', 'c', 'd', 'e', 'f')

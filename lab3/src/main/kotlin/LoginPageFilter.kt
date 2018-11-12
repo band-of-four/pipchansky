@@ -9,6 +9,7 @@ import javax.servlet.FilterConfig
 import javax.servlet.Filter
 
 class LoginPageFilter : Filter {
+
   @Throws(ServletException::class)
   override fun init(filterConfig: FilterConfig) { }
 
