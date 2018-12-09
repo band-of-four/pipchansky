@@ -14,7 +14,7 @@ class MainController {
   @GetMapping("/graph")
   fun graph() = "graph"
 
-  @GetMapping("/login")
-  fun login() = "login"
+//  @GetMapping("/login")
+//  fun login() = "login"
 
 }

@@ -45,16 +45,6 @@ class PointController {
     return points
   }
 
-  open class PointRequest() {
-    constructor(x: Double, y: Double, r: Double) : this() {
-      this.x = x
-      this.y = y
-      this.r = r
-    }
-
-    var x: Double = 0.0
-    var y: Double = 0.0
-    var r: Double = 0.0
-  }
+  open class PointRequest(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0)
 
 }
