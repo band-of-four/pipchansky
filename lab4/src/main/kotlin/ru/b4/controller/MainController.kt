@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 class MainController {
 
   @GetMapping("/", "/index")
-  fun home() = "index"
+  fun home() = "index.html"
 
   @GetMapping("/graph")
-  fun graph() = "graph"
-
-//  @GetMapping("/login")
-//  fun login() = "login"
+  fun graph() = "graph.html"
 
 }
