@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
-
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
@@ -18,14 +17,14 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
   override fun configure(http: HttpSecurity) {
     http
         .authorizeRequests()
-          .antMatchers("/js/**", "/**").permitAll()
-          .antMatchers("/graph").hasRole("USER")
+          .antMatchers("/js/**", "/index*").permitAll()
+          .antMatchers("/graph*").hasRole("USER")
           .and()
         .formLogin()
-          .loginPage("/login") // FIXME unimplemented
+          .loginPage("/login")
           .loginProcessingUrl("/login")
           .defaultSuccessUrl("/graph",true)
-          .failureUrl("/login-error") // FIXME unimplemented
+          .failureUrl("/login-error")
           .and()
         .logout().permitAll()
   }

@@ -14,4 +14,10 @@ class MainController {
   @GetMapping("/graph")
   fun graph() = "graph.html"
 
+  @GetMapping("/login")
+  fun login() = "login.html"
+
+  @GetMapping("/login-error")
+  fun loginError() = "login-error.html"
+
 }

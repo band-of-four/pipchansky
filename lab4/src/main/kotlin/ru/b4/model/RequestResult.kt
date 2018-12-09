@@ -12,6 +12,6 @@ data class RequestResult(var x: Double = 0.0,
 
   @Id
   @GeneratedValue
-  private var id: Long? = null
+  var id: Long? = null
 
 }
