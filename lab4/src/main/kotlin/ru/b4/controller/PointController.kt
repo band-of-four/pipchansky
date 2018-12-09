@@ -1,7 +1,7 @@
 package ru.b4.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.b4.Point
+import ru.b4.model.Point
 
 @RestController
 @RequestMapping("/point")

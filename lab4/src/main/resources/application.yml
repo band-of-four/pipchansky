@@ -2,13 +2,17 @@ spring:
   jpa:
     database: POSTGRESQL
     show-sql: true
+    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties.hibernate.temp.use_jdbc_metadata_defaults: false
   datasource:
     platform: postgres
     url: jdbc:postgresql://localhost:5432/postgres
     username: username
     password: password
     driverClassName: org.postgresql.Driver
+
 server:
   port: 8080

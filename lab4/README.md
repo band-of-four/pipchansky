@@ -15,4 +15,3 @@ Run docker:
 ```bash
 sudo docker run -it --rm -p 5432:5432 pip_lab4
 ```
-
