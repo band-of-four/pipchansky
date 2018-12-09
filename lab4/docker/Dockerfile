@@ -1,0 +1,7 @@
+FROM postgres:9.6
+
+ENV POSTGRES_USER username
+ENV POSTGRES_PASSWORD password
+
+EXPOSE 5432
+
