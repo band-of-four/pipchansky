@@ -30,8 +30,8 @@ class PointController {
   }
 
   @PostMapping
-  fun create(@RequestBody p: Map<Int?, PointRequest>): Point? {
-    return tryHit(p[null]!!.x, p[null]!!.y, p[null]!!.r)
+  fun create(@RequestBody p: Map<String?, PointRequest>): Point? {
+    return tryHit(p["point"]!!.x, p["point"]!!.y, p["point"]!!.r)
   }
 
   @GetMapping
