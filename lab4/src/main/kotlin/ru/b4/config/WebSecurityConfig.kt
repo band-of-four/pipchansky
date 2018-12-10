@@ -21,13 +21,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         .csrf().disable()
         .authorizeRequests()
           .antMatchers("/js/**", "/index*", "/auth/login", "/auth/registration", "/", "/*.ico").permitAll()
-          .antMatchers("/graph*").hasRole("USER")
           .anyRequest().authenticated()
         .and()
           .formLogin()
           .loginPage("/auth/login")
           .defaultSuccessUrl("/graph", true)
-          .failureUrl("/auth/login-error")
           .permitAll()
         .and()
           .logout().permitAll()
@@ -40,7 +38,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         .dataSource(dataSource)
         .passwordEncoder(NoOpPasswordEncoder.getInstance())
         .usersByUsernameQuery("select username, password, active from usr where username=?")
-        .authoritiesByUsernameQuery("select u.username, ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?")
+        .authoritiesByUsernameQuery("select u.username, " +
+            "ur.roles from usr u inner join user_role ur on u.id = ur.user_id where u.username=?")
   }
 
 }
