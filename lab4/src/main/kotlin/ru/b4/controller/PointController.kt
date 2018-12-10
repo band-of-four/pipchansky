@@ -17,7 +17,7 @@ class PointController {
     return p
   }
 
-  private fun validate(x: Double, y: Double, r: Double) = r in (1..4) && x in (-4..4) && y in (-3..5)
+  private fun validate(x: Double, y: Double, r: Double) = r in (1.0..4.0) && x in (-4.0..4.0) && y in (-3.0..5.0)
 
   private fun checkHit(x: Double, y: Double, r: Double): Boolean {
     return true
