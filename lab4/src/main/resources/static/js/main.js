@@ -30,11 +30,9 @@ Vue.component ('graph', {
                 var xVal = (cursorpt.x-170)*r/150;
                 var yVal = -(cursorpt.y-170)*r/150;
                 var point = {
-                    point: {
                         x: xVal + "",
                         y: yVal + "",
                         r: r + ""
-                    }
                 };
                 pointApi.save({}, point).then(result =>
                 result.json().then(data => {
@@ -196,7 +194,6 @@ function rpls(elem) {
 }
 
 function redraw() {
-    console.log("4");
     var r = document.getElementsByName("valueR")[8].checked ? 3 :
         document.getElementsByName("valueR")[7].checked ? 2 :
             document.getElementsByName("valueR")[6].checked ? 1 : -1;
