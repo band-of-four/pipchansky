@@ -1,6 +1,40 @@
 var pointApi  = Vue.resource('/point{/id}');
 var points = [];
 
+Vue.component ('graph', {
+    template:
+        '<svg id="graph" width="340" height="340" @click="get_points">' +
+        '<rect x="20" y="95" width="150" height="75"  fill="blue" />' +
+        '<path d="M 245 170 A 75 75 0 0 0 170 95 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>' +
+        '<polygon points="170,170 245,170 170,245" fill="blue"/>' +
+        '<text id="graph_x" x="315" y="184" font-family="monospace" font-size="20" fill="white" stroke="black">R</text>' +
+        '<text id="graph_y" y="25" x="174" font-family="monospace" font-size="20" fill="white" stroke="black">R</text>' +
+        '<line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
+        '<line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
+        '</svg>',
+    methods: {
+        get_points: function () {
+            document.getElementById("invalidR").textContent = "";
+            var pt = document.getElementById('graph').createSVGPoint();
+            pt.x = event.clientX;
+            pt.y = event.clientY;
+            var r = document.getElementsByName("valueR")[8].checked ? 3 :
+                document.getElementsByName("valueR")[7].checked ? 2 :
+                    document.getElementsByName("valueR")[6].checked ? 1 : -1;
+            var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
+            if (r > 0) {
+                var data = {x: (cursorpt.x-170)*r/150,
+                        y: -(cursorpt.y-170)*r/150,
+                        r: r};
+                points.push(data);
+                redraw();
+            } else {
+                document.getElementById("invalidR").textContent = "Значение r должно быть положительным.";
+            }
+        }
+    }
+});
+
 
 Vue.component('point-form', {
     template:
@@ -42,11 +76,11 @@ Vue.component('point-form', {
         '<label for="Rminus1">-1</label>'+
         '<input class="w3-radio" type="radio" id="Rplus0" name="valueR" value="0" v-model="rValue" @click="validate_r"/>'+
         '<label for="Rplus0">0</label>'+
-        '<input class="w3-radio" type="radio" id="Rplus1" name="valueR" value="1" checked="true" v-model="rValue" oninput="redraw()"/>'+
+        '<input class="w3-radio" type="radio" id="Rplus1" name="valueR" value="1" checked="true" v-model="rValue" @click="validate_r" oninput="redraw()"/>'+
         '<label for="Rplus1">1</label>'+
-        '<input class="w3-radio" type="radio" id="Rplus2" name="valueR" value="2" v-model="rValue" oninput="redraw()"/>'+
+        '<input class="w3-radio" type="radio" id="Rplus2" name="valueR" value="2" v-model="rValue" @click="validate_r" oninput="redraw()"/>'+
         '<label for="Rplus2">2</label>'+
-        '<input class="w3-radio" type="radio" id="Rplus3" name="valueR" value="3" v-model="rValue" oninput="redraw()"/>'+
+        '<input class="w3-radio" type="radio" id="Rplus3" name="valueR" value="3" v-model="rValue" @click="validate_r" oninput="redraw()"/>'+
         '<label for="Rplus3">3</label>'+
         '<label id="invalidR" style="color: red"/>' +
         '<br/>'+
@@ -64,12 +98,11 @@ Vue.component('point-form', {
             document.getElementById("invalidY").textContent = "";
             document.getElementById("invalidR").textContent = "";
             var error= false;
-            if (this.valueY == null){
-                error=true;
+            if (document.getElementById("yValue").value == null){
                 document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
             }
-            if (this.valueY > 3 || this.valueY < -5) {
-                error=true;
+            if (document.getElementById("yValue").value > 3 || document.getElementById("yValue").value < -5) {
+                error = true;
                 document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
             }
             var r = document.getElementsByName("valueR")[8].checked ? 3 :
@@ -108,7 +141,6 @@ Vue.component('point-form', {
         },
 
         validate_y: function(){
-            console.log("EEEEEEE");
             document.getElementById("invalidY").textContent = "";
             try {
                 var y = document.getElementById("yValue").value;
@@ -125,19 +157,6 @@ Vue.component('point-form', {
             }
         }
     }
-});
-
-Vue.component ('graph', {
-    template:
-        '<svg id="graph" width="340" height="340">' +
-        '<rect x="20" y="95" width="150" height="75"  fill="blue" />' +
-        '<path d="M 245 170 A 75 75 0 0 0 170 95 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>' +
-        '<polygon points="170,170 245,170 170,245" fill="blue"/>' +
-        '<text id="graph_x" x="315" y="184" font-family="monospace" font-size="20" fill="white" stroke="black">R</text>' +
-        '<text id="graph_y" y="25" x="174" font-family="monospace" font-size="20" fill="white" stroke="black">R</text>' +
-        '<line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
-        '<line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
-        '</svg>'
 });
 
 var app = new Vue({
