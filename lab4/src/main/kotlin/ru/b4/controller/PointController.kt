@@ -42,8 +42,9 @@ class PointController {
   }
 
   @PostMapping
-  fun create(@RequestBody p: Map<String?, PointRequest>): Point? {
-    return tryHit(p["point"]!!.x, p["point"]!!.y, p["point"]!!.r)
+  fun create(@RequestBody p: PointRequest): Point? {
+    // TODO add point to db here
+    return tryHit(p.x, p.y, p.r)
   }
 
   @GetMapping
@@ -52,10 +53,8 @@ class PointController {
   }
 
   @GetMapping("/update/{r}")
-  fun getAllRebuilt(@PathVariable r: Double): List<Point> {
-    points.map { it.hit = checkHit(it.x, it.y, r) }
-    return points
-  }
+  fun getAllRebuilt(@PathVariable r: Double) = points.map { it.hit = checkHit(it.x, it.y, r) }
+
 
   open class PointRequest(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0)
 

@@ -132,9 +132,9 @@ Vue.component('point-form', {
                 document.getElementById("save").disabled = true;
             }
             if(error) return;
-            var point = {point:{x: this.xValue,
+            var point = {x: this.xValue,
                          y: this.yValue,
-                         r: this.rValue}};
+                         r: this.rValue};
             pointApi.save({}, point).then(result =>
             result.json().then(data => {
                 redraw();
