@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 @Controller
 class MainController {
 
-  @GetMapping("/", "/index")
-  fun home() = "index.html"
+  @GetMapping("/")
+  fun home() = "login.html"
 
   @GetMapping("/graph")
   fun graph() = "graph.html"

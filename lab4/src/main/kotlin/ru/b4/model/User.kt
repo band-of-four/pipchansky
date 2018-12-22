@@ -18,4 +18,7 @@ data class User(@Column(nullable = false, unique = true) var username: String = 
   @Enumerated(EnumType.STRING)
   var roles: Set<Role>? = null
 
+  @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+  var history: List<RequestResult>? = null
+
 }
