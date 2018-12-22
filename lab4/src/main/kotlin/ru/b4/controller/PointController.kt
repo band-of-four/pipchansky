@@ -1,7 +1,10 @@
 package ru.b4.controller
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import org.springframework.web.bind.annotation.*
 import ru.b4.model.Point
+import java.lang.Math.abs
 
 @RestController
 @RequestMapping("/point")
@@ -20,7 +23,16 @@ class PointController {
   private fun validate(x: Double, y: Double, r: Double) = r in (1..4) && x in (-4..4) && y in (-3..5)
 
   private fun checkHit(x: Double, y: Double, r: Double): Boolean {
-    return true
+    if (x in -r..0.0 && y in 0.0..r/2) {
+      return true
+    }
+    if (x >= 0 && y >= 0 && x*x + y*y <= r*r/4){
+      return true
+    }
+    if (x >= 0 && y <= 0 && abs(x) + abs(y) <= r/2){
+      return true
+    }
+    return false
   }
 
 

@@ -1,5 +1,8 @@
-var pointApi  = Vue.resource('/point{/id}');
-var points = [];
+var customActions = {
+    update: {method: 'GET', url: '/point/update{/r}'}
+};
+
+var pointApi  = Vue.resource('/point{/id}',{},customActions);
 
 Vue.component ('graph', {
     template:
@@ -15,6 +18,7 @@ Vue.component ('graph', {
     methods: {
         get_points: function () {
             document.getElementById("invalidR").textContent = "";
+            document.getElementById("save").disabled = false;
             var pt = document.getElementById('graph').createSVGPoint();
             pt.x = event.clientX;
             pt.y = event.clientY;
@@ -23,13 +27,24 @@ Vue.component ('graph', {
                     document.getElementsByName("valueR")[6].checked ? 1 : -1;
             var cursorpt =  pt.matrixTransform(document.getElementById('graph').getScreenCTM().inverse());
             if (r > 0) {
-                var data = {x: (cursorpt.x-170)*r/150,
-                        y: -(cursorpt.y-170)*r/150,
-                        r: r};
-                points.push(data);
-                redraw();
+                var xVal = (cursorpt.x-170)*r/150;
+                var yVal = -(cursorpt.y-170)*r/150;
+                var point = {
+                    point: {
+                        x: xVal + "",
+                        y: yVal + "",
+                        r: r + ""
+                    }
+                };
+                pointApi.save({}, point).then(result =>
+                result.json().then(data => {
+                    redraw();
+            }),
+                result=>{
+                });
             } else {
                 document.getElementById("invalidR").textContent = "Значение r должно быть положительным.";
+                document.getElementById("save").disabled = true;
             }
         }
     }
@@ -97,13 +112,16 @@ Vue.component('point-form', {
         save: function() {
             document.getElementById("invalidY").textContent = "";
             document.getElementById("invalidR").textContent = "";
+            document.getElementById("save").disabled = false;
             var error= false;
             if (document.getElementById("yValue").value == null){
                 document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
+                document.getElementById("save").disabled = true;
             }
             if (document.getElementById("yValue").value > 3 || document.getElementById("yValue").value < -5) {
                 error = true;
                 document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
+                document.getElementById("save").disabled = true;
             }
             var r = document.getElementsByName("valueR")[8].checked ? 3 :
                 document.getElementsByName("valueR")[7].checked ? 2 :
@@ -111,6 +129,7 @@ Vue.component('point-form', {
             if (r <= 0) {
                 error=true;
                 document.getElementById("invalidR").textContent = "Значение r должно быть положительным.";
+                document.getElementById("save").disabled = true;
             }
             if(error) return;
             var point = {point:{x: this.xValue,
@@ -118,7 +137,6 @@ Vue.component('point-form', {
                          r: this.rValue}};
             pointApi.save({}, point).then(result =>
             result.json().then(data => {
-                points.push(data);
                 redraw();
             }),
             result=>{
@@ -128,6 +146,7 @@ Vue.component('point-form', {
         validate_r: function() {
             try {
                 document.getElementById("invalidR").textContent = "";
+                document.getElementById("save").disabled = false;
                 var r = document.getElementsByName("valueR")[8].checked ? 3 :
                     document.getElementsByName("valueR")[7].checked ? 2 :
                         document.getElementsByName("valueR")[6].checked ? 1 : -1;
@@ -137,11 +156,13 @@ Vue.component('point-form', {
                 }
             } catch (e) {
                 document.getElementById("invalidR").textContent = e;
+                document.getElementById("save").disabled = true;
             }
         },
 
         validate_y: function(){
             document.getElementById("invalidY").textContent = "";
+            document.getElementById("save").disabled = false;
             try {
                 var y = document.getElementById("yValue").value;
                 y = y.replace(",", ".");
@@ -153,6 +174,7 @@ Vue.component('point-form', {
                 return true;
             } catch (e) {
                 document.getElementById("invalidY").textContent = e;
+                document.getElementById("save").disabled = true;
                 return false;
             }
         }
@@ -174,31 +196,36 @@ function rpls(elem) {
 }
 
 function redraw() {
+    console.log("4");
     var r = document.getElementsByName("valueR")[8].checked ? 3 :
         document.getElementsByName("valueR")[7].checked ? 2 :
             document.getElementsByName("valueR")[6].checked ? 1 : -1;
     document.getElementById("graph_x").textContent = r;
     document.getElementById("graph_y").textContent = r;
-    for (i = document.getElementsByClassName("point").length - 1; i >= 0;--i)
-        document.getElementsByClassName("point")[0].remove();
-    for (var i = 0; i < points.length; i++) {
-        //точка
-        var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
-        var cx = (points[i].x * 150) / r + 170;
-        var x = points[i].x;
-        c.setAttribute('cx',cx);
-        c.setAttribute('class','point');
-        var cy = 170 - points[i].y * 150 / r;
-        var y = points[i].y;
-        c.setAttribute('cy',cy);
-        c.setAttribute('r','3');
-        c.setAttribute('stroke', 'black');
-        if (true) {
-            c.style.fill='green';
-        } else {
-            c.style.fill='red';
-        }
-        document.getElementById('graph').appendChild(c);
-    }
+        pointApi.update({r:r}).then(result =>
+        result.json().then(data => {
+           var points = data;
+            for (i = document.getElementsByClassName("point").length - 1; i >= 0;--i)
+                document.getElementsByClassName("point")[0].remove();
+            for (var i = 0; i < points.length; i++) {
+                //точка
+                var c = document.createElementNS("http://www.w3.org/2000/svg", 'circle');
+                var cx = (points[i].x * 150) / r + 170;
+                c.setAttribute('cx',cx);
+                c.setAttribute('class','point');
+                var cy = 170 - points[i].y * 150 / r;
+                c.setAttribute('cy',cy);
+                c.setAttribute('r','3');
+                c.setAttribute('stroke', 'black');
+                if (points[i].hit) {
+                    c.style.fill='green';
+                } else {
+                    c.style.fill='red';
+                }
+                document.getElementById('graph').appendChild(c);
+            }
+        }),
+        result=>{
+        });
 
 }
