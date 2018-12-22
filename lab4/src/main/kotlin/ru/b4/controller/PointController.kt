@@ -53,8 +53,10 @@ class PointController {
   }
 
   @GetMapping("/update/{r}")
-  fun getAllRebuilt(@PathVariable r: Double) = points.map { it.hit = checkHit(it.x, it.y, r) }
-
+  fun getAllRebuilt(@PathVariable r: Double) : List<Point> {
+    points.map { it.hit = checkHit(it.x, it.y, r) }
+    return points
+  }
 
   open class PointRequest(var x: Double = 0.0, var y: Double = 0.0, var r: Double = 0.0)
 
