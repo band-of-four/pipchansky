@@ -68,6 +68,7 @@
         methods: {
             processForm: function (e) {
                 e.preventDefault();
+                this.response.message = '';
                 this.passHash = md5(this.password);
 
                 var details = {
@@ -91,7 +92,11 @@
                     },
                     body: formBody
                 })  .then(response => {
-                        return response;
+                        if (response.url.endsWith('error')) {
+                            this.response.message = 'Wrong login or password, try again';
+                        } else {
+                            window.location.replace(response.url);
+                        }
                     })
                     .then(obj => console.log(obj));
             }
