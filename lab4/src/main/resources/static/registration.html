@@ -15,39 +15,83 @@
         </v-toolbar>
         <v-content>
             <v-container fluid>
-                <h5 class="headline">Fill out the fields below and click the button, than you'll be able to sing in!</h5>
+                <h5 class="headline">Fill out the fields below and click the button, than you'll be able to sing
+                    in!</h5>
                 <br><br>
                 <div id="inputs">
-                    <form id="form" action="/auth/registration" method="post">
+                    <form id="form" action="/auth/registration" method="post" @submit.prevent="processForm">
                         <div>
                             <v-flex xs12 sm6 md3>
-                                <v-text-field type="text" name="username" label="Username" outline></v-text-field>
+                                <v-text-field type="text" v-model="username" name="username" label="Username"
+                                              outline></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md3>
-                                <v-text-field type="password" name="password" label="Password" outline></v-text-field>
+                                <v-text-field type="password" v-model="password" name="password" label="Password"
+                                              outline></v-text-field>
                             </v-flex>
-                            <div><v-btn type="submit" color="success">Sign up</v-btn></div>
+                            <div>
+                                <v-btn type="submit" color="success">Sign up</v-btn>
+                            </div>
                             <br><br>
-                            <div>If you already have got an account, you can <a href="/auth/registration">sign in</a> now!</div>
+                            <div>If you already have got an account, you can <a href="/auth/registration">sign in</a>
+                                now!
+                            </div>
                         </div>
                     </form>
                 </div>
-
             </v-container>
         </v-content>
     </v-app>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+<script src="http://www.myersdaily.org/joseph/javascript/md5.js"></script>
 
 <script>
-    // TODO prevent default form submit, also hash a password
+
     new Vue({
         el: '#app',
-        data: () => ({
-        //
-        })
+        data: {
+            username: '',
+            password: '',
+            passHash: '',
+            response: {
+                username: '',
+                type: 'REGISTRATION',
+                success: false,
+                message: ''
+            }
+        },
+        methods: {
+            processForm: function (e) {
+                e.preventDefault();
+                this.passHash = md5(this.password);
+                fetch('/auth/registration', {
+                    method: 'post',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({username: this.username, password: this.passHash})
+                })  .then((response) => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Network response is not OK');
+                    }).then((json) => {
+                        console.log(json);
+                        this.response.username = json["username"];
+                        this.response.success = json["success"];
+                        this.response.type = json["type"];
+                        this.response.message = json["message"];
+                        // TODO print a response cutely
+                    }).catch(function (error) {
+                        console.log('Request failed', error);
+                    });
+            }
+        }
     })
 
 </script>

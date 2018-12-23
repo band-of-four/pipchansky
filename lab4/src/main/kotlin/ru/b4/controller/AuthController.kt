@@ -26,7 +26,7 @@ class AuthController {
 
   @PostMapping("/registration")
   @ResponseBody
-  fun addUser(user: User): AuthResponse {
+  fun addUser(@RequestBody user: User): AuthResponse {
     println("=== Registration POST called with \"${user.username}:${user.password}\" ===") // FIXME
 
     val userFromDb = userRepo?.findByUsername(user.username)
@@ -41,7 +41,7 @@ class AuthController {
       userRepo?.save(user)
 
       authResponse.success = true
-      authResponse.message = "You've successfully registered new account. You can sing up now."
+      authResponse.message = "You've successfully registered new account. You can sing in now."
       authResponse
     }
   }
