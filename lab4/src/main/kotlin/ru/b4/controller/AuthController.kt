@@ -49,6 +49,6 @@ class AuthController {
   enum class AuthType { LOGIN, REGISTRATION }
 
   data class AuthResponse(var username: String = "", var type: AuthType = AuthType.LOGIN,
-                     var success: Boolean = false, var message: String = "")
+                          var success: Boolean = false, var message: String = "")
 
 }

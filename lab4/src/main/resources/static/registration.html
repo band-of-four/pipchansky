@@ -1,30 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/main.css" type="text/css">
-    <title>Register please</title>
+    <title>Registration</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
 <body>
-<div class="container vertical">
-    <div class="field" id="header">
-        <div class="top_header">Выполнили: Каюков Иван и Калугина Марина, P3202.</div>
-        <div class="top_variant">Вариант: 814</div>
-    </div>
-    <div class="container horizontal">
-        <div id="inputs" class="field grow">
-            <form id="form" action="/auth/registration" method="post">
-                <div class="container vertical">
-                    <div><label for="user"> User Name: <input id="user" type="text" name="username"/> </label></div>
-                    <div><label for="pass"> Password : <input id="pass" type="password" name="password"/> </label></div>
-                    <div><input id="send_button" type="submit" value="Sign Up"/></div>
+
+<div id="app">
+    <v-app id="inspire">
+        <v-toolbar app>
+            <v-toolbar-title>Authors: Kayukov Ivan and Kalugina Marina, P3202</v-toolbar-title>
+        </v-toolbar>
+        <v-content>
+            <v-container fluid>
+                <h5 class="headline">Fill out the fields below and click the button, than you'll be able to sing in!</h5>
+                <br><br>
+                <div id="inputs">
+                    <form id="form" action="/auth/registration" method="post">
+                        <div>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field type="text" name="username" label="Username" outline></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field type="password" name="password" label="Password" outline></v-text-field>
+                            </v-flex>
+                            <div><v-btn type="submit" color="success">Sign up</v-btn></div>
+                            <br><br>
+                            <div>If you already have got an account, you can <a href="/auth/registration">sign in</a> now!</div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </div>
+
+            </v-container>
+        </v-content>
+    </v-app>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+
+<script>
+    // TODO prevent default form submit, also hash a password
+    new Vue({
+        el: '#app',
+        data: () => ({
+        //
+        })
+    })
+
+</script>
+
 </body>
 </html>

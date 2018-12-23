@@ -26,11 +26,6 @@ class PointController {
   @Autowired
   var resultRepository: RequestResultRepository? = null
 
-  @GetMapping("/username")
-  fun currentUserName(principal: Principal): String {
-    return principal.name
-  }
-
   private fun tryHit(x: Double, y: Double, r: Double): Point? {
     if (!validate(x, y, r)) return null
     val hit = checkHit(x, y, r)
