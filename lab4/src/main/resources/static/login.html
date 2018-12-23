@@ -1,33 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <link rel="stylesheet" href="/css/main.css" type="text/css">
-    <title>Login please</title>
+    <title>Login</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
-<header>
-</header>
 <body>
-<div class="container vertical">
-    <div class="field" id="header">
-        <div class="top_header">Выполнили: Каюков Иван и Калугина Марина, P3202.</div>
-        <div class="top_variant">Вариант: 814</div>
-    </div>
-    <div class="container horizontal">
-        <div id="inputs" class="field grow">
-            <form id="form" action="/auth/login" method="post">
-                <div class="container vertical">
-                    <div><label for="user"> User Name: <input id="user" type="text" name="username"/> </label></div>
-                    <div><label for="pass"> Password : <input id="pass" type="password" name="password"/> </label></div>
-                    <div><input id="send_button" type="submit" value="Sign In"/></div>
-                    <div>If you don't have an account, <a href="/auth/registration">sign up</a> now!</div>
+
+<div id="app">
+    <v-app id="inspire">
+        <v-toolbar app>
+            <v-toolbar-title>Authors: Kayukov Ivan and Kalugina Marina, P3202</v-toolbar-title>
+        </v-toolbar>
+        <v-content>
+            <v-container fluid>
+                <h5 class="headline">Login and go to the graph!</h5>
+                <br><br>
+                <div id="inputs">
+                    <form id="form" action="/auth/login" method="post" @submit.prevent="processForm">
+                        <div>
+                            <div v-if="response.message !== ''">
+                                <h5 class="subheading">{{ response.message }}</h5>
+                            </div>
+                            <br>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field type="text" v-model="username" name="username" label="Username"
+                                              outline></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md3>
+                                <v-text-field type="password" v-model="password" name="password" label="Password"
+                                              outline></v-text-field>
+                            </v-flex>
+                            <div>
+                                <v-btn type="submit" color="success">Sign in</v-btn>
+                            </div>
+                            <br><br>
+                            <div>If you don't have an account, <a href="/auth/registration">sign up</a> now!</div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </div>
+            </v-container>
+        </v-content>
+    </v-app>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/babel-polyfill/dist/polyfill.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+<script src="http://www.myersdaily.org/joseph/javascript/md5.js"></script>
+
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            username: '',
+            password: '',
+            passHash: '',
+            response: {
+                username: '',
+                type: 'LOGIN',
+                success: false,
+                message: ''
+            }
+        },
+        methods: {
+            processForm: function (e) {
+                e.preventDefault();
+                this.passHash = md5(this.password);
+
+                var details = {
+                    'username': this.username,
+                    'password': this.passHash
+                };
+
+                var formBody = [];
+                for (var property in details) {
+                    var encodedKey = encodeURIComponent(property);
+                    var encodedValue = encodeURIComponent(details[property]);
+                    formBody.push(encodedKey + "=" + encodedValue);
+                }
+                formBody = formBody.join("&");
+
+                fetch('/auth/login', {
+                    method: 'post',
+                    redirect: 'follow',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                    },
+                    body: formBody
+                })  .then(response => {
+                        return response;
+                    })
+                    .then(obj => console.log(obj));
+            }
+        }
+    })
+
+</script>
+
 </body>
 </html>

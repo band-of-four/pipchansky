@@ -21,6 +21,10 @@
                 <div id="inputs">
                     <form id="form" action="/auth/registration" method="post" @submit.prevent="processForm">
                         <div>
+                            <div v-if="response.message !== ''">
+                                <h5 class="subheading">{{ response.message }}</h5>
+                            </div>
+                            <br>
                             <v-flex xs12 sm6 md3>
                                 <v-text-field type="text" v-model="username" name="username" label="Username"
                                               outline></v-text-field>
@@ -33,7 +37,7 @@
                                 <v-btn type="submit" color="success">Sign up</v-btn>
                             </div>
                             <br><br>
-                            <div>If you already have got an account, you can <a href="/auth/registration">sign in</a>
+                            <div>If you already have got an account, you can <a href="/auth/login">sign in</a>
                                 now!
                             </div>
                         </div>
@@ -86,7 +90,6 @@
                         this.response.success = json["success"];
                         this.response.type = json["type"];
                         this.response.message = json["message"];
-                        // TODO print a response cutely
                     }).catch(function (error) {
                         console.log('Request failed', error);
                     });
