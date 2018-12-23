@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
     <title>Login please</title>
 </head>
+<header>
+</header>
 <body>
-Here will be authentication
-<form action="/auth/login" method="post">
-    <div><label> User Name : <input type="text" name="username"/> </label></div>
-    <div><label> Password: <input type="password" name="password"/> </label></div>
-    <div><input type="submit" value="Sign In"/></div>
-</form>
+<div class="container vertical">
+    <div class="field" id="header">
+        <div class="top_header">Выполнили: Каюков Иван и Калугина Марина, P3202.</div>
+        <div class="top_variant">Вариант: 814</div>
+    </div>
+    <div class="container horizontal">
+        <div id="inputs" class="field grow">
+            <form id="form" action="/auth/login" method="post">
+                <div class="container vertical">
+                    <div><label for="user"> User Name: <input id="user" type="text" name="username"/> </label></div>
+                    <div><label for="pass"> Password : <input id="pass" type="password" name="password"/> </label></div>
+                    <div><input id="send_button" type="submit" value="Sign In"/></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

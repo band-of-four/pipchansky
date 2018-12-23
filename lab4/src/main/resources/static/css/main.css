@@ -1,0 +1,252 @@
+html {
+    font-family: monospace;
+    font-size: 14px;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    color: black;
+    margin: 0 0 20px;
+}
+body {
+    display: flex;
+}
+.field {
+    margin: 10px;
+    padding: 1.5em;
+    background: #aadcff;
+    -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.7);
+}
+.field > * {
+    margin-left: auto;
+    margin-right: auto;
+}
+.field.grow {
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+.container {
+    margin: 0 30px;
+    flex-grow: 1;
+    display: flex;
+}
+.container.horizontal {
+    margin: 0;
+    flex-direction: row;
+}
+.container.vertical {
+    margin: 0;
+    flex-direction: column;
+}
+.field > img {
+    border-radius: 7px;
+    margin: 5px;
+    display: block;
+}
+button, input[type = "submit"] {
+    margin: 10px;
+    background: #e6f1ff;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+}
+input[type = "submit"] {
+    width: calc(100% - 10px);
+}
+button, input[type = "button"] {
+    margin: 10px;
+    background: #e6f1ff;
+    border: 0;
+    width: 40px;
+    height: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.7);
+}
+input[type = "button"] {
+    width: calc(100% - 10px);
+}
+input[type = "text"] {
+    padding: 3px;
+}
+input[type = "password"] {
+    padding: 3px;
+}
+td > * {
+    margin: 5px;
+}
+#results td, #results th {
+    text-align: center;
+    padding: 0.5em;
+    border: 1px solid black;
+}
+#results {
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+button:hover {
+    background: #d6e0ee;
+}
+button:active, button.active {
+    background: #b9c3d1;
+}
+.hidden {
+    display: none;
+}
+#inputs > * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 3em;
+}
+.invalid {
+    box-shadow: 0 0 7px 0 red;
+    background: rgba(255, 0, 0, 0.38);
+    border-color: red;
+}
+#task {
+    align-self: flex-start;
+}
+#results_field {
+    max-height: calc((20px + 1em) * 10 + 20px);
+    overflow-y: auto;
+}
+form {
+    width: max-content;
+}
+input::placeholder {
+    color: green;
+}
+@media screen and (max-width: 1280px) {
+    .container.horizontal {
+        flex-direction: column-reverse;
+    }
+    #task {
+        align-self: unset;
+    }
+    #task img {
+        display: inline-block;
+    }
+    #task_img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .field, .container {
+        max-width: 100%;
+    }
+    #results td, #results th {
+        font-size: 11px;
+    }
+    #header {
+        font-size: 15px;
+    }
+    .res_elem {
+    }
+}
+
+@media screen and (min-width: 1204px) {
+    .container.horizontal {
+        flex-direction: column-reverse;
+    }
+    #task {
+        align-self: unset;
+    }
+    #task img {
+        display: inline-block;
+    }
+    #task_img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .field, .container {
+        max-width: 100%;
+    }
+    #results td, #results th {
+        font-size: 11px;
+    }
+    #header {
+        font-size: 30px;
+    }
+    .res_elem {
+    }
+}
+
+@media screen and (max-width: 1204px) {
+    .container.horizontal {
+        flex-direction: column-reverse;
+    }
+    #task {
+        align-self: unset;
+    }
+    #task img {
+        display: inline-block;
+    }
+    #task_img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .field, .container {
+        max-width: 100%;
+    }
+    #results td, #results th {
+        font-size: 11px;
+    }
+    #header {
+        font-size: 17px;
+    }
+    .res_elem {
+    }
+
+    #inputs > * {
+        padding-right: 2em;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .container.horizontal {
+        flex-direction: column-reverse;
+    }
+    #task {
+        align-self: unset;
+    }
+    #task img {
+        display: inline-block;
+    }
+    #task_img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .field, .container {
+        max-width: 100%;
+    }
+    #results td, #results th {
+        font-size: 11px;
+    }
+    #header {
+        font-size: 15px;
+    }
+    .res_elem {
+    }
+
+    #inputs > * {
+        padding-right: 2em;
+    }
+}

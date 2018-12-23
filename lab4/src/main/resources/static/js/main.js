@@ -6,6 +6,7 @@ var pointApi  = Vue.resource('/point{/id}',{},customActions);
 
 Vue.component ('graph', {
     template:
+        '<div id="task" class="field">' +
         '<svg id="graph" width="340" height="340" @click="get_points">' +
         '<rect x="20" y="95" width="150" height="75"  fill="blue" />' +
         '<path d="M 245 170 A 75 75 0 0 0 170 95 L 170 170 Z" fill="blue" stroke="none" fill-rule="evenodd"/>' +
@@ -14,7 +15,8 @@ Vue.component ('graph', {
         '<text id="graph_y" y="25" x="174" font-family="monospace" font-size="20" fill="white" stroke="black">R</text>' +
         '<line x1="50%" y1="0%" x2="50%" y2="100%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
         '<line x1="0%" y1="50%" x2="100%" y2="50%" style="stroke:rgb(0,0,0);stroke-width:2" />' +
-        '</svg>',
+        '</svg>' +
+        '</div>',
     methods: {
         get_points: function () {
             document.getElementById("invalidR").textContent = "";
@@ -51,7 +53,8 @@ Vue.component ('graph', {
 
 Vue.component('point-form', {
     template:
-        '<div>' +
+        '<div class="container horizontal">' +
+        '<div id="inputs" class="field grow">' +
         '<label>X</label>'+
         '<input class="w3-radio" type="radio" id="Xminus5" name="valueX" value="-5" v-model="xValue" />'+
         '<label for="Xminus5">-5</label>'+
@@ -95,9 +98,11 @@ Vue.component('point-form', {
         '<label for="Rplus2">2</label>'+
         '<input class="w3-radio" type="radio" id="Rplus3" name="valueR" value="3" v-model="rValue" @click="validate_r" oninput="redraw()"/>'+
         '<label for="Rplus3">3</label>'+
+        '<br/>'+
         '<label id="invalidR" style="color: red"/>' +
         '<br/>'+
         '<input type="button" id="save" value="Save" @click="save"/>' +
+        '</div>' +
         '</div>',
     data: function() {
         return {

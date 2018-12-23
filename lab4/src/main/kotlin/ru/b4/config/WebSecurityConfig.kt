@@ -20,7 +20,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     http
         .csrf().disable()
         .authorizeRequests()
-          .antMatchers("/js/**", "/index*", "/auth/login", "/auth/registration", "/", "/*.ico").permitAll()
+          .antMatchers("/js/**","/css/**", "/index*", "/auth/login", "/auth/registration", "/", "/*.ico").permitAll()
           .anyRequest().authenticated()
         .and()
           .formLogin()
