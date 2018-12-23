@@ -40,7 +40,7 @@ Vue.component ('graph', {
                 pointApi.save({}, point).then(result =>
                 result.json().then(data => {
                     redraw();
-                    updateTable(xVal, yVal, r);
+                    updateTable();
             }),
                 result=>{
                 });
@@ -124,7 +124,7 @@ Vue.component('point-form', {
             pointApi.save({}, point).then(result =>
             result.json().then(data => {
                 redraw();
-                updateTable(this.xValue, this.yValue, this.rValue);
+                updateTable();
             }),
             result=>{
             });
@@ -195,6 +195,8 @@ var app = new Vue({
         '</div>'
 });
 
+updateTable()
+
 function rpls(elem) {
     elem.value = elem.value.replace(/[^\d,.-]/g, '');
 }
@@ -234,10 +236,11 @@ function redraw() {
 }
 
 
-function updateTable(x, y, r) {
+function updateTable() {
     pointApi.getHistory().then(result =>
     result.json().then(data => {
         var points = data;
+        if (points.length <= 0) {return}
         document.getElementById("results").innerHTML = "<tr>" +
             "<th>N</th>" +
             "<th>X</th>" +
