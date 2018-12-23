@@ -30,7 +30,7 @@ class AuthController {
     println("=== Registration POST called with \"${user.username}:${user.password}\" ===") // FIXME
 
     val userFromDb = userRepo?.findByUsername(user.username)
-    val authResponse = AuthResponse(user.username, AuthType.REGISTRATION)
+    val authResponse =  AuthResponse(user.username, AuthType.REGISTRATION)
     return if (userFromDb != null) {
       authResponse.success = false
       authResponse.message = "Username '${user.username}' is already taken"

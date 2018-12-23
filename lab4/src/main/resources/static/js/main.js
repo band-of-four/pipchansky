@@ -1,5 +1,6 @@
 var customActions = {
-    update: {method: 'GET', url: '/point/update{/r}'}
+    update: {method: 'GET', url: '/point/update{/r}'},
+    getHistory: {method: 'GET', url: '/point/get-history'}
 };
 
 var pointApi  = Vue.resource('/point{/id}',{},customActions);
@@ -39,6 +40,7 @@ Vue.component ('graph', {
                 pointApi.save({}, point).then(result =>
                 result.json().then(data => {
                     redraw();
+                    updateTable(xVal, yVal, r);
             }),
                 result=>{
                 });
@@ -113,34 +115,16 @@ Vue.component('point-form', {
     },
     methods: {
         save: function() {
-            document.getElementById("invalidY").textContent = "";
-            document.getElementById("invalidR").textContent = "";
-            document.getElementById("save").disabled = false;
-            var error= false;
-            if (document.getElementById("yValue").value == null){
-                document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
-                document.getElementById("save").disabled = true;
+            if (!this.validate_r() || !this.validate_y()){
+                return;
             }
-            if (document.getElementById("yValue").value > 3 || document.getElementById("yValue").value < -5) {
-                error = true;
-                document.getElementById("invalidY").textContent = "Y должен быть числом от -5 до 3.";
-                document.getElementById("save").disabled = true;
-            }
-            var r = document.getElementsByName("valueR")[8].checked ? 3 :
-                document.getElementsByName("valueR")[7].checked ? 2 :
-                    document.getElementsByName("valueR")[6].checked ? 1 : -1;
-            if (r <= 0) {
-                error=true;
-                document.getElementById("invalidR").textContent = "Значение r должно быть положительным.";
-                document.getElementById("save").disabled = true;
-            }
-            if(error) return;
             var point = {x: this.xValue,
                          y: this.yValue,
                          r: this.rValue};
             pointApi.save({}, point).then(result =>
             result.json().then(data => {
                 redraw();
+                updateTable(this.xValue, this.yValue, this.rValue);
             }),
             result=>{
             });
@@ -157,9 +141,11 @@ Vue.component('point-form', {
                 if (r <= 0) {
                     throw "Значение r должно быть положительным.";
                 }
+                return true;
             } catch (e) {
                 document.getElementById("invalidR").textContent = e;
                 document.getElementById("save").disabled = true;
+                return false;
             }
         },
 
@@ -184,15 +170,30 @@ Vue.component('point-form', {
     }
 });
 
+Vue.component('result-table', {
+    template:
+        '<div id="results_field" class="field grow hidden">' +
+        '<table id="results">' +
+        '<tr>' +
+        '<th>N</th>' +
+        '<th>X</th>' +
+        '<th>Y</th>' +
+        '<th>R</th>' +
+        '<th>&isin;</th>' +
+        '</tr>' +
+        '</table>' +
+        '</div>'
+});
+
 var app = new Vue({
     el: '#app',
     template:
         '<div>' +
         '<graph />' +
         '<point-form />' +
+        '<result-table/>' +
         '</div>'
 });
-
 
 function rpls(elem) {
     elem.value = elem.value.replace(/[^\d,.-]/g, '');
@@ -206,7 +207,7 @@ function redraw() {
     document.getElementById("graph_y").textContent = r;
         pointApi.update({r:r}).then(result =>
         result.json().then(data => {
-           var points = data;
+            var points = data;
             for (i = document.getElementsByClassName("point").length - 1; i >= 0;--i)
                 document.getElementsByClassName("point")[0].remove();
             for (var i = 0; i < points.length; i++) {
@@ -230,4 +231,33 @@ function redraw() {
         result=>{
         });
 
+}
+
+
+function updateTable(x, y, r) {
+    pointApi.getHistory().then(result =>
+    result.json().then(data => {
+        var points = data;
+        document.getElementById("results").innerHTML = "<tr>" +
+            "<th>N</th>" +
+            "<th>X</th>" +
+            "<th>Y</th>" +
+            "<th>R</th>" +
+            "<th>&isin;</th></tr>";
+        var counter = 1;
+        points.forEach(function (elem) {
+            console.log(elem);
+            document.getElementById("results").innerHTML +=
+                "<tr class='res_elem'><td>" + counter +
+                "</td><td>" + elem["x"] +
+                "</td><td>" + elem["y"] +
+                "</td><td>" + elem["r"] +
+                "</td><td>" + elem["hit"] +
+                "</td></tr>";
+            counter++;
+        });
+        document.getElementById("results_field").className = "field grow";
+    }),
+    result=>{
+    });
 }
