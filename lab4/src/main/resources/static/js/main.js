@@ -108,9 +108,9 @@ Vue.component('point-form', {
         '</div>',
     data: function() {
         return {
-            xValue: 0,
+            xValue: 1,
             yValue: '',
-            rValue: 0
+            rValue: 1
         }
     },
     methods: {
@@ -195,7 +195,8 @@ var app = new Vue({
         '</div>'
 });
 
-updateTable()
+updateTable();
+redraw();
 
 function rpls(elem) {
     elem.value = elem.value.replace(/[^\d,.-]/g, '');
@@ -234,7 +235,6 @@ function redraw() {
         });
 
 }
-
 
 function updateTable() {
     pointApi.getHistory().then(result =>

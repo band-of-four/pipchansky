@@ -1,18 +1,17 @@
 spring:
   jpa:
-    database: POSTGRESQL
     show-sql: true
     generate-ddl: true
     hibernate:
       ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    database-platform: org.hibernate.dialect.Oracle10gDialect
     properties.hibernate.temp.use_jdbc_metadata_defaults: false
   datasource:
-    platform: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    platform: oracle
+    url: jdbc:oracle:thin:@localhost:1521:orbis
     username: username
     password: password
-    driverClassName: org.postgresql.Driver
+    driverClassName: oracle.jdbc.OracleDriver
 
 server:
-  port: 8080
+  port: 27525

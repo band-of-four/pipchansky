@@ -14,6 +14,7 @@ import ru.b4.model.RequestResult
 import ru.b4.repository.RequestResultRepository
 import ru.b4.repository.UserRepository
 import java.security.Principal
+import javax.servlet.http.HttpServletResponse
 
 
 @RestController
@@ -56,6 +57,13 @@ class PointController {
     userRepository?.save(user)
 
     return point
+  }
+
+  @PostMapping("/clear")
+  fun clearHistory(principal: Principal, resp: HttpServletResponse) {
+    val user = getUser(principal.name)
+    resultRepository?.deleteAllByUser(user)
+    resp.sendRedirect("/graph")
   }
 
   @GetMapping("/update/{r}")
